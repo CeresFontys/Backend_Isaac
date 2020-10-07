@@ -5,5 +5,10 @@
     <RootNamespace>Isaac_API</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers" />
+    <Folder Include="Services" />
+  </ItemGroup>
+
 
 </Project>
