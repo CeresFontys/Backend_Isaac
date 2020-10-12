@@ -49,7 +49,6 @@ namespace Isaac_API.Services
                 switch (splitTopic[5])
                 {
                     case "temperature":
-                        Console.WriteLine(payload);
                         //Transform to float and create a point representing the data.
                         float.TryParse(payload, out var temperature);
                         point = PointData.Measurement("sensortemperature")
@@ -68,7 +67,7 @@ namespace Isaac_API.Services
                         break;
                     case "uptime":
                         int.TryParse(payload, out var uptime);
-                        point = PointData.Measurement("sensorhumidity")
+                        point = PointData.Measurement("sensoruptime")
                             .Tag("floor", floor)
                             .Tag("x", x)
                             .Tag("y", y)
