@@ -13,18 +13,47 @@ namespace Structurizr
             Workspace workspace = new Workspace("Getting Started", "This is a model of my software system.");
             Model model = workspace.Model;
             
-            
-            //Objects
+            //People using the application
             Person visitor = model.AddPerson("Visitor", "A visitor of the site.");
             Person user = model.AddPerson("User", "An authorized user of the site");
             Person admin = model.AddPerson("Admin", "A admin of the site");
 
-            SoftwareSystem softwareSystem = model.AddSoftwareSystem("Sensor Application", "A video site");
+            //Our Software System
+            SoftwareSystem softwareSystem = model.AddSoftwareSystem("Sensor Application", "A sensor application");
             visitor.Uses(softwareSystem, "Uses");
             user.Uses(softwareSystem, "Uses");
             admin.Uses(softwareSystem, "Uses");
             
+            //External Software Systems
+            var mqtt = model.AddSoftwareSystem("MQTT", "pub/sub Event bus");
+            softwareSystem.Uses(mqtt, "Uses");
+            var mysql = model.AddSoftwareSystem("MySQL", "Business database");
+            softwareSystem.Uses(mysql, "Uses");
+            var influx = model.AddSoftwareSystem("InfluxDB", "Sensor time series database");
+            softwareSystem.Uses(influx, "Uses");
+            
+            //Containers of the software system
+            var frontend = softwareSystem.AddContainer("SPA Frontend", "The frontend of the application", "React.js (hosted by nginx)");
+            visitor.Uses(frontend, "Uses");
+            user.Uses(frontend, "Uses");
+            admin.Uses(frontend, "Uses");
 
+            frontend.Uses(mqtt, "Uses");
+            
+            var backend = softwareSystem.AddContainer("API Backend","The backend of the application", "ASP.NET Core");
+            frontend.Uses(backend, "Uses");
+            
+            backend.Uses(mqtt, "Uses");
+            backend.Uses(mysql, "Uses");
+            backend.Uses(influx, "Uses");
+            
+            //Frontend components
+            //frontend.AddComponent("", "", "", "");
+            
+            
+            //Backend components
+            //backend.AddComponent("", "", "", "");
+            
             //Views
             ViewSet viewSet = workspace.Views;
             
