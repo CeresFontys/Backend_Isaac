@@ -97,7 +97,7 @@ namespace Structurizr
             
             var eventStyle = new ElementStyle("Event");
             eventStyle.Background = "#9bbede";
-            eventStyle.Shape = Shape.Cylinder;
+            eventStyle.Shape = Shape.Pipe;
 
             viewSet.Configuration.Styles.Add(softwareSystemStyle);
             viewSet.Configuration.Styles.Add(personStyle);
