@@ -17,7 +17,7 @@ namespace Isaac_DataService.Services
         {
             username = configuration.GetValue<string>("Influx:Username");
             password = configuration.GetValue<string>("Influx:Password");
-            url = "https://" +
+            url = "http://" +
                   configuration.GetValue<string>("Influx:IP") +
                   ":" +
                   configuration.GetValue<string>("Influx:Port");
