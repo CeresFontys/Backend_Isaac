@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
