@@ -4,12 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
-
-
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
-
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
 EndProject
