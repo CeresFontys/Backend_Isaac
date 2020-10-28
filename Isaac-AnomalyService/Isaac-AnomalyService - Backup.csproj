@@ -5,9 +5,5 @@
     <RootNamespace>Isaac_AnomalyService</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 
 </Project>
