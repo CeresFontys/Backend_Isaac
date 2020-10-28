@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Client.Connecting;
-using MQTTnet.Client.Disconnecting;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.ManagedClient;
-using Newtonsoft.Json.Serialization;
 
 namespace Isaac_API.Services
 {
@@ -20,14 +14,8 @@ namespace Isaac_API.Services
 
     public class MqttConnection : IMqttConnection
     {
-        public IManagedMqttClient Client
-        {
-            get { return client; }
-        }
+        private readonly ManagedMqttClientOptions options;
 
-        private IManagedMqttClient client;
-        private ManagedMqttClientOptions options;
-        
         public MqttConnection(IConfiguration configuration)
         {
             //Credentials uit configuratie halen
@@ -44,16 +32,18 @@ namespace Isaac_API.Services
                     .WithTcpServer(address, port)
                     .WithCredentials(username, password)
                     .WithTls().Build()).Build();
-            client = new MqttFactory().CreateManagedMqttClient();
+            Client = new MqttFactory().CreateManagedMqttClient();
             StartClient().Wait();
         }
 
+        public IManagedMqttClient Client { get; }
+
         public async Task StartClient()
         {
-            if (!client.IsStarted)
+            if (!Client.IsStarted)
             {
-                await client.SubscribeAsync(new MqttTopicFilterBuilder().WithExactlyOnceQoS().WithTopic("#").Build());
-                await client.StartAsync(options);
+                await Client.SubscribeAsync(new MqttTopicFilterBuilder().WithExactlyOnceQoS().WithTopic("#").Build());
+                await Client.StartAsync(options);
             }
         }
     }

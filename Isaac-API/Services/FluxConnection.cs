@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
@@ -8,10 +8,10 @@ namespace Isaac_API.Services
 {
     public class FluxConnection : IFluxConnection
     {
-        private string username;
-        private string password;
-        private string url;
-        private string orgId;
+        private readonly string orgId;
+        private readonly string url;
+        private readonly string username;
+        private readonly string password;
 
         public FluxConnection(IConfiguration configuration)
         {
@@ -21,15 +21,14 @@ namespace Isaac_API.Services
                   configuration.GetValue<string>("Influx:IP") +
                   ":" +
                   configuration.GetValue<string>("Influx:Port");
-            
+
             orgId = configuration.GetValue<string>("Influx:Organisation");
 
-            var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray()).Url(url).Build();
-            
-            
+            var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray())
+                .Url(url).Build();
+
+
             Client = InfluxDBClientFactory.Create(options);
-            
-            
         }
 
         public InfluxDBClient Client { get; }
@@ -37,10 +36,27 @@ namespace Isaac_API.Services
         public async Task EnsureBucket(string name, BucketRetentionRules retentionRules)
         {
             var api = Client.GetBucketsApi();
-            if (await api.FindBucketByNameAsync(name)==null)
+            if (await api.FindBucketByNameAsync(name) == null) await api.CreateBucketAsync(name, retentionRules, orgId);
+        }
+
+        public async Task<bool> SetRetention(string name, BucketRetentionRules rule)
+        {
+            var api = Client.GetBucketsApi();
+            var oldBucket = await api.FindBucketByNameAsync(name);
+            var oldRule = oldBucket.RetentionRules.Find(retentionRules => retentionRules.Type == BucketRetentionRules.TypeEnum.Expire);
+            if (oldRule!=null)
             {
-                await api.CreateBucketAsync(name, retentionRules, orgId);
+                oldBucket.RetentionRules.Remove(oldRule);
             }
+            oldBucket.RetentionRules.Add(rule);
+            var newBucket = await api.UpdateBucketAsync(oldBucket);
+            
+            if (newBucket.RetentionRules.Contains(rule))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
