@@ -4,7 +4,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using Microsoft.Extensions.Configuration;
 
-namespace Isaac_API.Services
+namespace Isaac_DataService.Services
 {
     public class FluxConnection : IFluxConnection
     {

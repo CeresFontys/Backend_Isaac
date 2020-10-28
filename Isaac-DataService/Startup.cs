@@ -1,11 +1,11 @@
-using Isaac_API.Services;
+using Isaac_DataService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Isaac_API
+namespace Isaac_DataService
 {
     public class Startup
     {
