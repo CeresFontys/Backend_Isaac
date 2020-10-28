@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
-
-
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
-
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
-
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-SensorSettingService", "Isaac-SensorSettingService\Isaac-SensorSettingService.csproj", "{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,21 +23,22 @@ Global
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69F6FC29-08D4-407E-8CC9-E12A8521C87C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.Build.0 = Release|Any CPU
-		
 		{C9FF7D57-0969-4E33-8B99-36698AB219AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C9FF7D57-0969-4E33-8B99-36698AB219AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9FF7D57-0969-4E33-8B99-36698AB219AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9FF7D57-0969-4E33-8B99-36698AB219AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		
 		{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}.Release|Any CPU.Build.0 = Release|Any CPU
-
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
