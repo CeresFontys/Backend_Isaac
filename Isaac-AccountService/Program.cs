@@ -20,7 +20,7 @@ namespace Isaac_AccountService
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseUrls("http://localhost:5006");
                 });
     }
 }
