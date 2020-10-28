@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Isaac_API
+namespace Isaac_DataService
 {
     public class Program
     {

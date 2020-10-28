@@ -1,6 +1,6 @@
 ﻿using InfluxDB.Client;
 
-namespace Isaac_API.Services
+namespace Isaac_DataService.Services
 {
     public interface IFluxConnection
     {

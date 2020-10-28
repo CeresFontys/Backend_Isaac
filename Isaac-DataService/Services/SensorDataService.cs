@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
 
-namespace Isaac_API.Services
+namespace Isaac_DataService.Services
 {
     public class SensorDataService : IHostedService
     {
