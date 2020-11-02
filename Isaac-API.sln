@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-APIGateway", "Isaac-A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-SensorSettingService", "Isaac-SensorSettingService\Isaac-SensorSettingService.csproj", "{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AuthorizationService", "Isaac-AuthorizationService\Isaac-AuthorizationService.csproj", "{79CAC102-FD62-4676-B35B-E37DE87D6BE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
