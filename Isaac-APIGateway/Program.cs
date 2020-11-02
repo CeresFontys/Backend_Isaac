@@ -20,9 +20,15 @@ namespace Isaac_APIGateway
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(builder =>
+                .ConfigureAppConfiguration((context, builder) =>
                 {
-                    
+                    builder
+                        .SetBasePath(context.HostingEnvironment.ContentRootPath)
+                        .AddJsonFile("appsettings.json", true, true)
+                        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
+                        .AddJsonFile($"configuration.json", true, true)
+                        .AddJsonFile($"configuration.{context.HostingEnvironment.EnvironmentName}.json")
+                        .AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

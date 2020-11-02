@@ -35,8 +35,7 @@ namespace Isaac_AnomalyService
             {
                 app.UseDeveloperExceptionPage();
             }
-
-
+            
             app.UseRouting();
 
             app.UseAuthorization();

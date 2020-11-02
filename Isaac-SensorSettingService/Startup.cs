@@ -36,8 +36,6 @@ namespace Isaac_SensorSettingService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
