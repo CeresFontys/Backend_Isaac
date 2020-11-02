@@ -41,41 +41,56 @@ namespace Structurizr
             user.Uses(frontend, "Interacts");
             admin.Uses(frontend, "Manages");
 
-            frontend.Uses(mqtt, "Receives Data");
+            var gateway = softwareSystem.AddContainer("API Gateway", "The backend of the application", "ASP.NET Core");
+            frontend.Uses(gateway, "");
             
-            var backend = softwareSystem.AddContainer("API Backend","The backend of the application", "ASP.NET Core");
-            frontend.Uses(backend, "Uses");
+            var accountContainer = softwareSystem.AddContainer("Account Service", "The account service", "ASP.NET Core");
+            accountContainer.Uses(mysql, "Processes Data");
+            {
+                var component = accountContainer.AddComponent("Account Component", "");
+                var component2 = accountContainer.AddComponent("Account Controller", "");
+                component.Uses(mysql, "Processes Data");
+                gateway.Uses(component2, "");
+                component.Uses(component2, "");
+            }
             
-            backend.Uses(mqtt, "Processes Data");
-            mqtt.Uses(backend, "Receives Data");
-            backend.Uses(mysql, "Stores Information");
-            backend.Uses(influx, "Stores Data");
+
+            var authorizationContainer = softwareSystem.AddContainer("Authorization Service", "The account service", "ASP.NET Core");
+            authorizationContainer.Uses(mysql, "Stores Data");
+            authorizationContainer.AddComponent("Authorization Component", "").Uses(mysql, "Stores Data");
+            authorizationContainer.AddComponent("Authorization Controller", "").Uses(gateway, "");
             
+            var anomalyContainer = softwareSystem.AddContainer("Sensor Anomaly Service", "The account service", "ASP.NET Core");
+            anomalyContainer.Uses(mqtt, "Processed Data");
+            anomalyContainer.Uses(mysql, "Stores Errors");
+            var comp = anomalyContainer.AddComponent("Sensor Anomaly Component", "");
+            comp.Uses(mqtt, "Processed Data");
+            comp.Uses(mysql, "Stores Errors");
+            anomalyContainer.AddComponent("Sensor Anomaly Controller", "").Uses(gateway, "");
+            
+            var settingsContainer = softwareSystem.AddContainer("Sensor Settings Service", "The account service", "ASP.NET Core");
+            settingsContainer.Uses(influx, "Edits preferences");
+            settingsContainer.AddComponent("Sensor Settings Component", "").Uses(influx, "Edits preferences");
+            {
+                var component = settingsContainer.AddComponent("Sensor Settings Controller", "").Uses(gateway, "");
+            }
+            
+            
+            var dataContainer = softwareSystem.AddContainer("Data Management", "The account service", "ASP.NET Core");
+            dataContainer.Uses(mqtt, "Processes Data");
+            mqtt.Uses(dataContainer, "Receives Data");
+            dataContainer.Uses(influx, "Stores Data");
+
+            gateway.Uses(accountContainer,"");
+            gateway.Uses(authorizationContainer,"");
+            gateway.Uses(anomalyContainer,"");
+            gateway.Uses(settingsContainer,"");
+            gateway.Uses(dataContainer,"");
+
             //Frontend components
             //frontend.AddComponent("", "", "", "");
             
             
-            //Backend components
-            var accountService = backend.AddComponent("Account Service", "This component handles account interactions", "ASP.NET Core API Controller");
-            accountService.Uses(mysql, "Stores Data");
-            var authorizationService = backend.AddComponent("Authorization Service", "This component handles permissions", "ASP.NET Core API Controller");
-            authorizationService.Uses(mysql, "Stores Data");
-            var anomalyService = backend.AddComponent("Sensor Anomaly Service", "this component detects anomalies and logs them", "ASP.NET Core API Controller");
-            anomalyService.Uses(mqtt, "Processed Data");
-            anomalyService.Uses(mysql, "Stores Errors");
-            var settingsService = backend.AddComponent("Sensor Settings Service", "this components managing changing settings related to sensors", "ASP.NET Core API Controller");
-            settingsService.Uses(influx, "Edits preferences");
-            var dataService = backend.AddComponent("Data Management", "This extracts mqtt data and populates the influxdb and then repopulates mqtt", "ASP.NET Core API Controller");
-            dataService.Uses(mqtt, "Processes Data");
-            dataService.Uses(influx, "Stores Data");
-
-            frontend.Uses(accountService, "");
-            frontend.Uses(authorizationService, "");
-            frontend.Uses(anomalyService, "");
-            frontend.Uses(settingsService, "");
-            frontend.Uses(dataService, "");
-
-            mqtt.Uses(dataService, "Receives Data");
 
 
             //Styles
@@ -115,16 +130,12 @@ namespace Structurizr
             containerView.AddAllContainers();
             containerView.AddAllSoftwareSystems();
 
-
-            ComponentView backendView =
-                viewSet.CreateComponentView(backend, "Component", "The Backend Diagram");
-            backendView.AddNearestNeighbours(backend);
-            foreach (Component comp in backend.Components)
-            {
-                backendView.Add(comp);
-            }
-
-            backendView.Remove(backend);
+            ComponentView componentView = viewSet.CreateComponentView(accountContainer, "Component", "The Component Diagram");
+            componentView.AddAllComponents();
+            componentView.Add(gateway);
+            componentView.Add(frontend);
+            componentView.AddAllPeople();
+            componentView.Add(mysql);
             
             //Upload
             StructurizrClient structurizrClient = new StructurizrClient(" 8afe380d-d3a2-46a5-9f24-0aa290cb2455", "2219e66c-d2d3-4a6a-bb84-c9700f15d77c");
