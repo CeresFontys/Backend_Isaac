@@ -9,13 +9,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Isaac_AuthorizationService.Services
 {
     public class AuthService : IUserService
     {
         private readonly ApplicationDbContext _dbContext;
-
+        private string hashedPassword;
         public AuthService()
         {
         }
@@ -24,12 +25,31 @@ namespace Isaac_AuthorizationService.Services
         {
             _dbContext = dbContext;
         }
+
+        public void Create(User user)
+        {
+            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username == user.Username);
+            if (dbUser == null)
+            {
+                hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = hashedPassword;
+
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new AlreadyExistsException("User already exists");
+            }
+        }
+
         public JwtUser Authenticate(string username, string password)
         {
             var jwtKey = "TryToGuessThisPassword";
             var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            bool verified = BC.Verify(password, user.Password);
 
-            if (user == null || password != user.Password)
+            if (user == null || !BC.Verify(password, user.Password))
             {
                 return null;
             }
@@ -57,21 +77,6 @@ namespace Isaac_AuthorizationService.Services
             jwtUser.Token = token;
             jwtUser.User = user;
             return jwtUser;
-        }
-
-        public void Create(User user)
-        {
-            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username == user.Username);
-
-            if (dbUser == null)
-            {
-                _dbContext.Users.Add(user);
-                _dbContext.SaveChanges();
-            }
-            else
-            {
-                throw new AlreadyExistsException("User already exists");
-            }
         }
     }
 }

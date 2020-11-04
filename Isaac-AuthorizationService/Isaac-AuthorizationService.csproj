@@ -9,9 +9,12 @@
     <ItemGroup>
       <Compile Remove="Migrations\20201104103251_InitialCreate.cs" />
       <Compile Remove="Migrations\20201104103251_InitialCreate.Designer.cs" />
+      <Compile Remove="Migrations\20201104134425_TextToVarchar.cs" />
+      <Compile Remove="Migrations\20201104134425_TextToVarchar.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
           <PrivateAssets>all</PrivateAssets>
