@@ -23,6 +23,22 @@ namespace Isaac_AuthorizationService.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost("Register")]
+        //Register
+        public IActionResult Register(User user)
+        {
+            try
+            {
+                _userService.Create(user);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(User user)
         {

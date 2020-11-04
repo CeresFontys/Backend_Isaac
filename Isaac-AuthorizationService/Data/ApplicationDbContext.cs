@@ -11,8 +11,7 @@ namespace Isaac_AuthorizationService.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                 : base(options)
-        {
-
+        { 
         }
 
         public DbSet<User> Users { get; set; }

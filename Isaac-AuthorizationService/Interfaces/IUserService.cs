@@ -8,6 +8,7 @@ namespace Isaac_AuthorizationService.Interfaces
 {
     public interface IUserService
     {
+        void Create(User user);
         JwtUser Authenticate(string username, string password);
     }
 }

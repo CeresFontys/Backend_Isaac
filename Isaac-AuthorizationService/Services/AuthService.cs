@@ -1,4 +1,5 @@
 ﻿using Isaac_AuthorizationService.Data;
+using Isaac_AuthorizationService.Interfaces;
 using Isaac_AuthorizationService.Models;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,9 +12,14 @@ using System.Threading.Tasks;
 
 namespace Isaac_AuthorizationService.Services
 {
-    public class AuthService
+    public class AuthService : IUserService
     {
         private readonly ApplicationDbContext _dbContext;
+
+        public AuthService()
+        {
+        }
+
         public AuthService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -33,7 +39,8 @@ namespace Isaac_AuthorizationService.Services
                 //Making claims for the Jwt token. So if I decode the token I could find these data
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("id", user.Id.ToString())
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim("Username", user.Username)
                 }),
                 //How long the token is valid
                 Expires = DateTime.UtcNow.AddDays(1),
@@ -50,6 +57,21 @@ namespace Isaac_AuthorizationService.Services
             jwtUser.Token = token;
             jwtUser.User = user;
             return jwtUser;
+        }
+
+        public void Create(User user)
+        {
+            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username == user.Username);
+
+            if (dbUser == null)
+            {
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new AlreadyExistsException("User already exists");
+            }
         }
     }
 }
