@@ -47,7 +47,7 @@ namespace Isaac_AuthorizationService.Services
         {
             var jwtKey = "TryToGuessThisPassword";
             var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
-            bool verified = BC.Verify(password, user.Password);
+            //bool verified = BC.Verify(password, user.Password);
 
             if (user == null || !BC.Verify(password, user.Password))
             {
