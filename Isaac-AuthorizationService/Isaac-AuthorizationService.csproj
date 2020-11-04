@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>Isaac_AuthorizationService</RootNamespace>
+        <UserSecretsId>a25bf22e-2917-4b39-bca6-9b191ddf6131</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
