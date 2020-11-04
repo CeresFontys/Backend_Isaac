@@ -16,7 +16,6 @@ namespace Isaac_AuthorizationService.Services
     public class AuthService : IUserService
     {
         private readonly ApplicationDbContext _dbContext;
-        private string hashedPassword;
         public AuthService()
         {
         }
@@ -31,9 +30,8 @@ namespace Isaac_AuthorizationService.Services
             var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username == user.Username);
             if (dbUser == null)
             {
-                hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
-                user.Password = hashedPassword;
-
+                //Hashing the password
+                user.Password = BC.HashPassword(user.Password);
                 _dbContext.Users.Add(user);
                 _dbContext.SaveChanges();
             }
@@ -48,7 +46,7 @@ namespace Isaac_AuthorizationService.Services
             var jwtKey = "TryToGuessThisPassword";
             var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
             //bool verified = BC.Verify(password, user.Password);
-
+            //Check if the user exists and verifies the hashed password
             if (user == null || !BC.Verify(password, user.Password))
             {
                 return null;

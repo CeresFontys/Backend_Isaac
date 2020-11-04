@@ -24,7 +24,6 @@ namespace Isaac_AuthorizationService.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        //Register
         public IActionResult Register(User user)
         {
             try

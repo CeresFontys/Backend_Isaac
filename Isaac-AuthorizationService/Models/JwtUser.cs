@@ -11,6 +11,5 @@ namespace Isaac_AuthorizationService.Models
     {
         public User User { get; set; }
         public string Token { get; set; }
-
     }
 }
