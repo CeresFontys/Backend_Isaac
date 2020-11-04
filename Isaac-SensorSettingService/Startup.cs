@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Isaac_DataService.Services;
+using Isaac_SensorSettingService.Compontents;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,7 +29,7 @@ namespace Isaac_SensorSettingService
         {
             services.AddSingleton<FluxConnection>();
 
-
+            services.AddSingleton<SettingsService>();
             services.AddControllers();
         }
 
