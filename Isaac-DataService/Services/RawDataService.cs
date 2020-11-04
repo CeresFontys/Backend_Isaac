@@ -4,18 +4,19 @@ using System.Threading.Tasks;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
+using Isaac_DataService.Components.Connections;
 using Microsoft.Extensions.Hosting;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
 
 namespace Isaac_DataService.Services
 {
-    public class SensorDataService : IHostedService
+    public class RawDataService : IHostedService
     {
         private readonly IManagedMqttClient inputClient;
         private readonly WriteApiAsync outputClient;
 
-        public SensorDataService(MqttConnection mqttConnection, FluxConnection influxConnection)
+        public RawDataService(MqttConnection mqttConnection, FluxConnection influxConnection)
         {
             inputClient = mqttConnection.Client;
             ConfigureInfluxOutput(influxConnection).Wait();
@@ -35,14 +36,14 @@ namespace Isaac_DataService.Services
         private async Task ConfigureInfluxOutput(FluxConnection influxConnection)
         {
             await influxConnection.EnsureBucket("sensordata",
-                new BucketRetentionRules(BucketRetentionRules.TypeEnum.Expire, 24 * 60 * 60));
+                new BucketRetentionRules(BucketRetentionRules.TypeEnum.Expire, 24 * 60 * 60 * 30));
         }
 
         private async Task HandleMessage(MqttApplicationMessageReceivedEventArgs arg)
         {
             PointData point = null;
             var splitTopic = arg.ApplicationMessage.Topic.Split("/");
-
+            
             if (splitTopic[0] == "humtemp")
             {
                 var payload = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
@@ -71,7 +72,7 @@ namespace Isaac_DataService.Services
                             .Field("value", humidity);
                         break;
                     case "uptime":
-                        int.TryParse(payload, out var uptime);
+                        long.TryParse(payload, out var uptime);
                         point = PointData.Measurement("sensoruptime")
                             .Tag("floor", floor)
                             .Tag("x", x)

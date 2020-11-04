@@ -4,7 +4,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using Microsoft.Extensions.Configuration;
 
-namespace Isaac_DataService.Services
+namespace Isaac_DataService.Components.Connections
 {
     public class FluxConnection : IFluxConnection
     {
@@ -29,6 +29,7 @@ namespace Isaac_DataService.Services
 
 
             Client = InfluxDBClientFactory.Create(options);
+            Client.GetTasksApi().CreateTaskAsync(new TaskCreateRequest())
         }
 
         public InfluxDBClient Client { get; }

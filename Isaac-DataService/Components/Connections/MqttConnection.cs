@@ -5,7 +5,7 @@ using MQTTnet;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.ManagedClient;
 
-namespace Isaac_DataService.Services
+namespace Isaac_DataService.Components.Connections
 {
     public interface IMqttConnection
     {
