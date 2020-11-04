@@ -22,7 +22,7 @@ namespace Isaac_SensorSettingService.Controllers
         [Route("CreateTask")]
         public async Task<string> CreateTask()
         {
-          await _settingsService.CreateTask();
+            await _settingsService.CreateTask();
             return "test";
         }
     }
