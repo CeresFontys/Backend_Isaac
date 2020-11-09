@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Isaac_AccountService.Controllers
+namespace Isaac_FloorService.Controllers
 {
     [ApiController]
     [Route("[controller]")]

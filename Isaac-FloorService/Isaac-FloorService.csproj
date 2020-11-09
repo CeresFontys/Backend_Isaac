@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>Isaac_AccountService</RootNamespace>
+        <RootNamespace>Isaac_FloorService</RootNamespace>
     </PropertyGroup>
 
 

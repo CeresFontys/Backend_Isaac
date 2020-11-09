@@ -1,6 +1,6 @@
 using System;
 
-namespace Isaac_AccountService
+namespace Isaac_FloorService
 {
     public class WeatherForecast
     {
