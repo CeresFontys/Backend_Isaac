@@ -14,6 +14,7 @@ namespace Isaac_AuthorizationService.Models
         public int Id { get; set; }
         [Required]
         [Column(TypeName = "varchar(50)")]
+        //moet veranderd worden naar Email
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }

@@ -34,7 +34,9 @@ namespace Isaac_AuthorizationService
             services.AddControllers();
             var connectionString = Configuration["MySQL:ConnectionString"];
             services.AddDbContext<ApplicationDbContext>(o => o.UseMySql(connectionString));
+
             services.AddScoped<IUserService, AuthService>();
+
             //services.AddDbContext<ApplicationDbContext>(options =>
             //        options.UseMySql(Configuration.GetConnectionString("MySQL:ConnectionString")));
         }
