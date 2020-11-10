@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InfluxDB.Client;
@@ -33,12 +34,14 @@ namespace Isaac_DataService.Services
             inputClient.Dispose();
         }
 
+        //Defaults for ensuring the bucket exists
         private async Task ConfigureInfluxOutput(FluxConnection influxConnection)
         {
             await influxConnection.EnsureBucket("sensordata",
                 new BucketRetentionRules(BucketRetentionRules.TypeEnum.Expire, 24 * 60 * 60 * 30));
         }
 
+        //Handles incoming MQTT Messages
         private async Task HandleMessage(MqttApplicationMessageReceivedEventArgs arg)
         {
             PointData point = null;
@@ -46,43 +49,46 @@ namespace Isaac_DataService.Services
             
             if (splitTopic[0] == "humtemp")
             {
-                var payload = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
-                var floor = splitTopic[1];
-                var x = splitTopic[2];
-                var y = splitTopic[3];
-                //splitTopic[4] is called sensor everywhere
-                //Switch on different types of data
-                switch (splitTopic[5])
+                try
                 {
-                    case "temperature":
-                        //Transform to float and create a point representing the data.
-                        float.TryParse(payload, out var temperature);
-                        point = PointData.Measurement("sensortemperature")
-                            .Tag("floor", floor)
-                            .Tag("x", x)
-                            .Tag("y", y)
-                            .Field("value", temperature);
-                        break;
-                    case "humidity":
-                        float.TryParse(payload, out var humidity);
-                        point = PointData.Measurement("sensorhumidity")
-                            .Tag("floor", floor)
-                            .Tag("x", x)
-                            .Tag("y", y)
-                            .Field("value", humidity);
-                        break;
-                    case "uptime":
-                        long.TryParse(payload, out var uptime);
-                        point = PointData.Measurement("sensoruptime")
-                            .Tag("floor", floor)
-                            .Tag("x", x)
-                            .Tag("y", y)
-                            .Field("value", uptime);
-                        break;
+                    var payload = Encoding.UTF8.GetString(arg.ApplicationMessage.Payload);
+                    var floor = splitTopic[1];
+                    var x = splitTopic[2];
+                    var y = splitTopic[3];
+                    var topic = splitTopic[5];
+                     //splitTopic[4] is called sensor everywhere
+                    //Switch on different types of data
+                    switch (topic)
+                    {
+                        case "temperature":
+                        case "humidity":
+                            //Transform to float and create a point representing the data.
+                            float.TryParse(payload, out var value1);
+                            point = CreatePointBase(floor, x, y, topic).Field("value", value1);
+                            break;
+                        case "uptime":
+                            //Transform to long and create a point representing the data.
+                            long.TryParse(payload, out var value2);
+                            point = CreatePointBase(floor, x, y, topic).Field("value", value2);
+                            break;
+                    }
                 }
-
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                
+                //Write point if message parsing was successful
                 if (point != null) await outputClient.WritePointAsync("sensordata", "Isaac", point);
             }
+        }
+
+        private PointData CreatePointBase(string floor, string x, string y, string topic)
+        {
+            return PointData.Measurement($"sensor{topic}")
+                .Tag("floor", floor)
+                .Tag("x", x)
+                .Tag("y", y);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Isaac_DataService.Components.Connections
 {
     public class FluxConnection : IFluxConnection
     {
-        private readonly string orgId;
+        public readonly string OrgId;
         private readonly string url;
         private readonly string username;
         private readonly string password;
@@ -22,22 +22,21 @@ namespace Isaac_DataService.Components.Connections
                   ":" +
                   configuration.GetValue<string>("Influx:Port");
 
-            orgId = configuration.GetValue<string>("Influx:Organisation");
+            OrgId = configuration.GetValue<string>("Influx:Organisation");
 
             var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray())
+                .Org(OrgId)
                 .Url(url).Build();
-
-
+            
             Client = InfluxDBClientFactory.Create(options);
-            Client.GetTasksApi().CreateTaskAsync(new TaskCreateRequest())
         }
 
         public InfluxDBClient Client { get; }
 
         public async Task EnsureBucket(string name, BucketRetentionRules retentionRules)
         {
-            var api = Client.GetBucketsApi();
-            if (await api.FindBucketByNameAsync(name) == null) await api.CreateBucketAsync(name, retentionRules, orgId);
+            var api = Client?.GetBucketsApi();
+            if (api!=null && await api.FindBucketByNameAsync(name) == null) await api.CreateBucketAsync(name, retentionRules, OrgId);
         }
 
         public async Task<bool> SetRetention(string name, BucketRetentionRules rule)

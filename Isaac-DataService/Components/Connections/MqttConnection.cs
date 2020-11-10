@@ -33,12 +33,12 @@ namespace Isaac_DataService.Components.Connections
                     .WithCredentials(username, password)
                     .WithTls().Build()).Build();
             Client = new MqttFactory().CreateManagedMqttClient();
-            StartClient().Wait();
+            StartListen().Wait();
         }
 
         public IManagedMqttClient Client { get; }
 
-        public async Task StartClient()
+        public async Task StartListen()
         {
             if (!Client.IsStarted)
             {
