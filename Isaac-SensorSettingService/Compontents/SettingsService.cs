@@ -32,19 +32,35 @@ namespace Isaac_SensorSettingService.Compontents
         }
 
 
-        public async Task CreateTask()
+        public async Task CreateTask(string bucketName, string taskName, string floor)
         {
             
-           await _fluxConnection.EnsureBucket("sensordata-downsampled",null);
+           await _fluxConnection.EnsureBucket(bucketName, null);
 
-           if (!await TaskExists("downsampler"))
+           if (!await TaskExists(taskName))
            {
+               SettingsModel settings = new SettingsModel()
+               {
+                   Id = floor,
+                   RefreshRate = "5m",
+                   KeepData = true
+               };
                var flux =
-                   "option task = {\n\tname: \"downsampler\",\n\tevery: 1h,\n\toffset: 0m,\n\tconcurrency: 1,\n\tretry: 5,\n}\n\ndata = from(bucket: \"sensordata\")\n\t|> range(start: -duration(v: int(v: task.every) * 2))\n\t|> filter(fn: (r) =>\n\t\t(r._measurement == \"sensortemperature\" or r._measurement == \"sensorhumidity\"))\n\ndata\n\t|> aggregateWindow(every: 1h, fn: mean)\n\t|> to(bucket: \"sensordata-downsampled\")";
+                   "option task = {\n\tname: \""+ taskName + "\"," +
+                   "\n\tevery: "+ settings.RefreshRate + "," +
+                   "\n\toffset: 0m," +
+                   "\n\tconcurrency: 1," +
+                   "\n\tretry: 5,\n}" +
+                   "\n\ndata = from(bucket: \"sensordata\")\n\t|> " +
+                   "range(start: -duration(v: int(v: task.every) * 2))\n\t|> " +
+                   "filter(fn: (r) =>\n\t\t(r._measurement == \"sensortemperature\" or r._measurement == \"sensorhumidity\" and r.floor == \"" + floor + "\"))" +
+                   "\n\ndata\n\t|> aggregateWindow(every: " + settings.RefreshRate + ", fn: mean)\n\t|>" +
+                   " to(bucket: \""+bucketName+"\")";
            
                var task = new TaskCreateRequest("", _orgId, null, TaskStatusType.Active, flux, "task");
-
                var taskType = await _tasksApi.CreateTaskAsync(task);
+
+               _dbContext.Settings.Add(settings);
            }
         }
         public async Task UpdateTask(SettingsModel settings)

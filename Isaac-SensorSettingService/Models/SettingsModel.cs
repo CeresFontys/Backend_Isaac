@@ -12,10 +12,10 @@ namespace Isaac_SensorSettingService.Models
     public class SettingsModel
     {
         [Key]
-        public int Id  { get; set; }
-        public int RefreshRate { get; set; }
+        public string Id  { get; set; }
+        public string RefreshRate { get; set; }
         public bool KeepData { get; set; }
-        public int ExpirationTime { get; set; }
+        public string ExpirationTime { get; set; }
 
     }
 }
