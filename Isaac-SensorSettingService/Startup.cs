@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Isaac_DataService.Services;
 using Isaac_SensorSettingService.Compontents;
+using Isaac_SensorSettingService.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,10 +29,14 @@ namespace Isaac_SensorSettingService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<FluxConnection>();
+            var connectionString = Configuration["MySQL:ConnectionString"];
+            services.AddDbContext<SettingContext>(o => o.UseMySql(connectionString));
 
-            services.AddSingleton<SettingsService>();
+            services.AddSingleton<FluxConnection>();
+            services.AddTransient<SettingsService>();
+
             services.AddControllers();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
