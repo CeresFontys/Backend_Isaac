@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InfluxDB.Client.Api.Domain;
+using Isaac_AnomalyService.Components.Services;
+using Isaac_AnomalyService.Logic;
 using Isaac_AnomalyService.Models;
 using Isaac_AnomalyService.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -16,21 +18,22 @@ namespace Isaac_AnomalyService.Controllers
     [ApiController]
     public class AnomalyController : ControllerBase
     {
-
+        private AnomalyService _anomalyService;
         private FluxConnection _fluxConnection;
 
-        public AnomalyController(FluxConnection fluxConnection){
-            _fluxConnection = fluxConnection;
+
+        public AnomalyController( AnomalyService anomalyService)
+        {
+            _anomalyService = anomalyService;
         }
 
         // GET: api/<AnomalyController>
         [HttpGet]
-        public async IAsyncEnumerable<string> Get()
+        public async IEnumerable<string> Get()
         {
-            await foreach(SensorData sensorData in _fluxConnection.LoadSensorData())
-            {
-                yield return JsonConvert.SerializeObject(sensorData);
-            }
+            
+            return  _anomalyService.Get();
+            
         }
 
         // GET api/<AnomalyController>/5
