@@ -22,18 +22,17 @@ namespace Isaac_AnomalyService.Controllers
         private FluxConnection _fluxConnection;
 
 
-        public AnomalyController( AnomalyService anomalyService)
+        public AnomalyController( AnomalyService anomalyService, FluxConnection fluxConnection)
         {
             _anomalyService = anomalyService;
+            _fluxConnection = fluxConnection;
         }
 
         // GET: api/<AnomalyController>
         [HttpGet]
-        public async IEnumerable<string> Get()
+        public async Task Get()
         {
-            
-            return  _anomalyService.Get();
-            
+            await _anomalyService.Get();
         }
 
         // GET api/<AnomalyController>/5
@@ -42,6 +41,16 @@ namespace Isaac_AnomalyService.Controllers
         {
             return "value";
         }
+
+        [HttpGet("test")]
+        public async IAsyncEnumerable<string> GetList(int id)
+        {
+            await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())
+            {
+                yield return JsonConvert.SerializeObject(sensorData);
+            }
+        }
+
 
         // POST api/<AnomalyController>
         [HttpPost]

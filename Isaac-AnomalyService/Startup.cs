@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Isaac_AnomalyService.Components.Services;
 using Isaac_AnomalyService.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Isaac_AnomalyService.Data;
+using Isaac_AnomalyService.Logic;
 
 namespace Isaac_AnomalyService
 {
@@ -30,8 +32,8 @@ namespace Isaac_AnomalyService
         {
             //services.AddSingleton<MqttConnection>();
             services.AddSingleton<FluxConnection>();
-
-            //services.AddHostedService<AnomalyService>();
+            services.AddTransient<DetectionAlgo>();
+            services.AddTransient<AnomalyService>();
 
             services.AddControllers();
             var connectionString = Configuration["MySQL:ConnectionString"];

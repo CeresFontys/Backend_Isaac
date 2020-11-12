@@ -19,8 +19,6 @@ namespace Isaac_AnomalyService.Models
     }
 
 
-
-
     public enum DataType
     {
         Temperature,
