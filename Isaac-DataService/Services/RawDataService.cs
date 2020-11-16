@@ -47,7 +47,7 @@ namespace Isaac_DataService.Services
             PointData point = null;
             var splitTopic = arg.ApplicationMessage.Topic.Split("/");
             
-            if (splitTopic[0] == "hum")
+            if (splitTopic[0] == "humtemp")
             {
                 try
                 {
