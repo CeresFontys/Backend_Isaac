@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using InfluxDB.Client.Core;
 using Isaac_DataService.Components.Connections;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MQTTnet;
 
 namespace Isaac_DataService.Services
@@ -43,33 +44,41 @@ namespace Isaac_DataService.Services
             while (shouldContinue)
             {
                 Stopwatch sw = Stopwatch.StartNew();
-                await GatherData(sensorDataModel);
+                sensorDataModel = await GatherData(sensorDataModel);
                 await PublishData(sensorDataModel);
                 Thread.Sleep(TimeSpan.FromSeconds(everySeconds)-sw.Elapsed);
             }
         }
 
-        private async Task GatherData(SensorDataModel model)
+        public async Task<SensorDataModel> GatherData(SensorDataModel model)
         {
             var api = _inputConnection.Client.GetQueryApi();
 
-            var flux = "from(bucket:\"sensordata-downsampled\") |> " +
-                       "range(start: -30m) |> " +
-                       "group(columns: [\"x\",\"y\",\"floor\"], mode: \"by\") |>" +
-                       "last()";
+            var fluxtemp = "from(bucket:\"sensordata-downsampled\") |> " +
+                           "range(start: -30m) |> " +
+                           "filter(fn: (r) => r._measurement == \"sensortemperature\" )|> "+
+                           "group(columns: [\"x\",\"y\",\"floor\"], mode: \"by\") |>" +
+                           "last()";
+            var fluxhum = "from(bucket:\"sensordata-downsampled\") |> " +
+                          "range(start: -30m) |> " +
+                          "filter(fn: (r) => r._measurement == \"sensorhumidity\" )|> "+
+                          "group(columns: [\"x\",\"y\",\"floor\"], mode: \"by\") |>" +
+                          "last()";
 
-            var temperature = api.QueryAsyncEnumerable<TemperatureData>(flux, CancellationToken.None);
-            var humidity = api.QueryAsyncEnumerable<HumidityData>(flux, CancellationToken.None);
+            var temperature = api.QueryAsyncEnumerable<TemperatureData>(fluxtemp, CancellationToken.None);
+            var humidity = api.QueryAsyncEnumerable<HumidityData>(fluxhum, CancellationToken.None);
 
             await foreach (var data in temperature)
             {
-                model.UpdateSensor(data);
+                await model.UpdateSensor(data);
             }
             
             await foreach (var data in humidity)
             {
-                model.UpdateSensor(data);
+                await model.UpdateSensor(data);
             }
+
+            return model;
         }
 
         public async Task PublishData(SensorDataModel model)
@@ -104,7 +113,7 @@ namespace Isaac_DataService.Services
     {
         public List<SensorData> Sensors = new List<SensorData>();
 
-        public void UpdateSensor(SensorData data)
+        public async Task UpdateSensor(SensorData data)
         {
             var oldData = Sensors.FirstOrDefault(sensorData => sensorData.Floor == data.Floor && sensorData.X == data.X && sensorData.Y == data.Y && sensorData.Type == data.Type);
             
@@ -117,7 +126,6 @@ namespace Isaac_DataService.Services
             {
                 Sensors.Add(data);
             }
-            Console.WriteLine("Updated local sensor");
         }
     }
 

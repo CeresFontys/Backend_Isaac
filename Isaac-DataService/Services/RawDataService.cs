@@ -47,7 +47,7 @@ namespace Isaac_DataService.Services
             PointData point = null;
             var splitTopic = arg.ApplicationMessage.Topic.Split("/");
             
-            if (splitTopic[0] == "humtemp")
+            if (splitTopic[0] == "hum")
             {
                 try
                 {
@@ -56,7 +56,7 @@ namespace Isaac_DataService.Services
                     var x = splitTopic[2];
                     var y = splitTopic[3];
                     var topic = splitTopic[5];
-                     //splitTopic[4] is called sensor everywhere
+                    //splitTopic[4] is called sensor everywhere
                     //Switch on different types of data
                     switch (topic)
                     {
@@ -64,7 +64,10 @@ namespace Isaac_DataService.Services
                         case "humidity":
                             //Transform to float and create a point representing the data.
                             float.TryParse(payload, out var value1);
-                            point = CreatePointBase(floor, x, y, topic).Field("value", value1);
+                            if (value1 <= 100)
+                            {
+                                point = CreatePointBase(floor, x, y, topic).Field("value", value1);
+                            }
                             break;
                         case "uptime":
                             //Transform to long and create a point representing the data.

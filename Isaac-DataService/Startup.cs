@@ -24,7 +24,9 @@ namespace Isaac_DataService
             services.AddSingleton<FluxConnection>();
 
             services.AddHostedService<RawDataService>();
-            services.AddHostedService<DataOutputService>();
+            services.AddSingleton<DataOutputService>();
+            services.AddSingleton<IHostedService, DataOutputService>(
+                serviceProvider => serviceProvider.GetService<DataOutputService>());
 
             services.AddControllers();
         }
