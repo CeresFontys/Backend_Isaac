@@ -27,24 +27,30 @@ namespace Isaac_AuthorizationService.Services
 
         public void Create(User user)
         {
-            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Username == user.Username);
-            if (dbUser == null)
-            {
-                //Hashing the password
-                user.Password = BC.HashPassword(user.Password);
-                _dbContext.Users.Add(user);
-                _dbContext.SaveChanges();
-            }
-            else
-            {
-                throw new AlreadyExistsException("User already exists");
-            }
+            //Hashing the password
+            user.Password = BC.HashPassword(user.Password);
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+
+            //var dbUser = _dbContext.Users.FirstOrDefault(x => x.Email == user.Email);
+            //if (dbUser == null)
+            //{
+            //    //Hashing the password
+            //    user.Password = BC.HashPassword(user.Password);
+            //    _dbContext.Users.Add(user);
+            //    _dbContext.SaveChanges();
+            //}
+            //else
+            //{
+            //    throw new AlreadyExistsException("User already exists");
+            //}
         }
 
         public JwtUser Authenticate(string username, string password)
         {
+            //to change
             var jwtKey = "TryToGuessThisPassword";
-            var user = _dbContext.Users.FirstOrDefault(u => u.Username == username);
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email == username);
             //bool verified = BC.Verify(password, user.Password);
             //Check if the user exists and verifies the hashed password
             if (user == null || !BC.Verify(password, user.Password))
@@ -58,7 +64,7 @@ namespace Isaac_AuthorizationService.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("Id", user.Id.ToString()),
-                    new Claim("Username", user.Username)
+                    new Claim("Email", user.Email)
                 }),
                 //How long the token is valid
                 Expires = DateTime.UtcNow.AddDays(1),
@@ -75,6 +81,11 @@ namespace Isaac_AuthorizationService.Services
             jwtUser.Token = token;
             jwtUser.User = user;
             return jwtUser;
+        }
+
+        public string Test()
+        {
+            return "ewa";
         }
     }
 }

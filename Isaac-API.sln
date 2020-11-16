@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-DataService", "Isaac-DataService\Isaac-DataService.csproj", "{69F6FC29-08D4-407E-8CC9-E12A8521C87C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-SensorSettingService", "Isaac-SensorSettingService\Isaac-SensorSettingService.csproj", "{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-SensorSettingService", "Isaac-SensorSettingService\Isaac-SensorSettingService.csproj", "{62E09CDD-2861-4EA9-B0B1-D7F78878BE11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Isaac-AuthorizationService", "Isaac-AuthorizationService\Isaac-AuthorizationService.csproj", "{79CAC102-FD62-4676-B35B-E37DE87D6BE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AuthorizationService", "Isaac-AuthorizationService\Isaac-AuthorizationService.csproj", "{79CAC102-FD62-4676-B35B-E37DE87D6BE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService.XUnit", "AuthorizationService.XUnit\AuthorizationService.XUnit.csproj", "{A32CCB77-9779-473D-9104-4DF5742DB9DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79CAC102-FD62-4676-B35B-E37DE87D6BE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32CCB77-9779-473D-9104-4DF5742DB9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32CCB77-9779-473D-9104-4DF5742DB9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32CCB77-9779-473D-9104-4DF5742DB9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32CCB77-9779-473D-9104-4DF5742DB9DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

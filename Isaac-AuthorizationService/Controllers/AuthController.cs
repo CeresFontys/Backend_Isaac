@@ -41,9 +41,9 @@ namespace Isaac_AuthorizationService.Controllers
         [HttpPost("Login")]
         public IActionResult Login(User user)
         {
-            if (user.Username != "" && user.Password != "")
+            if (user.Email != "" && user.Password != "")
             {
-                var jwtUser = _userService.Authenticate(user.Username, user.Password);
+                var jwtUser = _userService.Authenticate(user.Email, user.Password);
                 if (jwtUser == null)
                 {
                     return BadRequest();
@@ -53,5 +53,24 @@ namespace Isaac_AuthorizationService.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            try
+            {
+                _userService.Test();
+                return Ok("noice");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
+
+
+
+
     }
 }
