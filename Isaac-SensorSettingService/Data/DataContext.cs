@@ -9,12 +9,19 @@ using Microsoft.Extensions.Configuration;
 
 namespace Isaac_SensorSettingService.Data
 {
-    public class SettingContext : DbContext
+    public class DataContext : DbContext
     {
-        public SettingContext(DbContextOptions<SettingContext> options):base(options)
+        public DataContext(DbContextOptions<DataContext> options):base(options)
         {
         }
         public DbSet<SettingsModel> Settings { get; set; }
+        public DbSet<SensorModel> Sensors { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SensorModel>()
+                .HasKey(m => new { m.Floor, m.X, m.Y });
+        }
 
     }
 }

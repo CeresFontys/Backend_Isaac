@@ -20,10 +20,10 @@ namespace Isaac_SensorSettingService.Compontents
         private readonly TasksApi _tasksApi;
         private readonly FluxConnection _fluxConnection;
         private readonly string _orgId;
-        private readonly SettingContext _dbContext;
+        private readonly DataContext _dbContext;
 
 
-        public SettingsService(FluxConnection fluxConnection, IConfiguration configuration, SettingContext dbContext)
+        public SettingsService(FluxConnection fluxConnection, IConfiguration configuration, DataContext dbContext)
         {
             _fluxConnection = fluxConnection;
             _tasksApi = _fluxConnection.Client.GetTasksApi();

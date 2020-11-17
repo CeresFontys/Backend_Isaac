@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
-    [DbContext(typeof(SettingContext))]
+    [DbContext(typeof(DataContext))]
     partial class SettingContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -16,23 +16,42 @@ namespace Isaac_SensorSettingService.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorModel", b =>
+                {
+                    b.Property<string>("Floor")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Floor", "X", "Y");
+
+                    b.ToTable("Sensors");
+                });
+
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SettingsModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<int>("ExpirationTime")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Floor_id")
-                        .HasColumnType("int");
+                    b.Property<string>("ExpirationTime")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<bool>("KeepData")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("RefreshRate")
-                        .HasColumnType("int");
+                    b.Property<string>("RefreshRate")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 

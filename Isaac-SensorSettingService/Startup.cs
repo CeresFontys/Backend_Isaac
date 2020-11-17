@@ -30,11 +30,12 @@ namespace Isaac_SensorSettingService
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["MySQL:ConnectionString"];
-            services.AddDbContext<SettingContext>(o => o.UseMySql(connectionString));
+            services.AddDbContext<DataContext>(o => o.UseMySql(connectionString));
 
             services.AddSingleton<FluxConnection>();
             services.AddTransient<SettingsService>();
-
+            services.AddTransient<SensorService>();
+            services.AddCors();
             services.AddControllers();
            
         }
@@ -46,6 +47,10 @@ namespace Isaac_SensorSettingService
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseRouting();
 

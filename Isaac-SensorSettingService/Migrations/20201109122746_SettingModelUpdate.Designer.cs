@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
-    [DbContext(typeof(SettingContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20201109122746_SettingModelUpdate")]
     partial class SettingModelUpdate
     {
