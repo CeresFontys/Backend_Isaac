@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-DataService", "Isaac-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AnomalyService", "Isaac-AnomalyService\Isaac-AnomalyService.csproj", "{C9FF7D57-0969-4E33-8B99-36698AB219AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AccountService", "Isaac-AccountService\Isaac-AccountService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-FloorService", "Isaac-FloorService\Isaac-FloorService.csproj", "{9AF6A218-8F78-4331-B0C3-C6DECA8F736B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-APIGateway", "Isaac-APIGateway\Isaac-APIGateway.csproj", "{0FDB4AD1-FE69-4C44-93C7-5554FD4C820B}"
 EndProject

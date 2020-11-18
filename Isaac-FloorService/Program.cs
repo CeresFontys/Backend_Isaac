@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Isaac_AccountService
+namespace Isaac_FloorService
 {
     public class Program
     {
