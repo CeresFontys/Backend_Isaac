@@ -14,11 +14,10 @@ namespace Isaac_AnomalyService.Components.Services
 
         private FluxConnection _fluxConnection;
 
-        private DetectionAlgo _detectionAlgo = new DetectionAlgo();
+        private OutlierAlgo _detectionAlgo;
 
 
-
-        public AnomalyService(FluxConnection fluxConnection, DetectionAlgo detectionAlgo)
+        public AnomalyService(FluxConnection fluxConnection, OutlierAlgo detectionAlgo)
         {
             _fluxConnection = fluxConnection;
             _detectionAlgo = detectionAlgo;
@@ -28,13 +27,12 @@ namespace Isaac_AnomalyService.Components.Services
         {
 
             await foreach(SensorData sensorData in _fluxConnection.LoadSensorData())
-            {
-                await _detectionAlgo.SortData(sensorData);
+            { 
+               await _detectionAlgo.SortData(sensorData);
             }
 
-            await _detectionAlgo.GetAverageTemp();
-            await _detectionAlgo.GetAverageHum();
-            await _detectionAlgo.CheckOutlierTemp();
+            await _detectionAlgo.RunOutlierAlgo();
+
         }
     }
 }

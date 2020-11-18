@@ -32,7 +32,7 @@ namespace Isaac_AnomalyService
         {
             //services.AddSingleton<MqttConnection>();
             services.AddSingleton<FluxConnection>();
-            services.AddTransient<DetectionAlgo>();
+            services.AddTransient<OutlierAlgo>();
             services.AddTransient<AnomalyService>();
 
             services.AddControllers();
