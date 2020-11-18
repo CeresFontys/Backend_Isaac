@@ -25,6 +25,12 @@ namespace Isaac_SensorSettingService.Controllers
         {
             return _sensorService.GetSensorsByFloor(floor);
         }
+        [HttpGet]
+        [Route("sensors")]
+        public List<SensorModel> GetAllSensors()
+        {
+            return _sensorService.GetSensors();
+        }
 
         [HttpPost]
         [Route("add")]

@@ -38,6 +38,10 @@ namespace Isaac_SensorSettingService.Compontents
         { 
             return _dbContext.Sensors.Find(floor,x,y);
         }
+        public List<SensorModel> GetSensors()
+        {
+            return _dbContext.Sensors.ToList();
+        }
 
         public List<SensorModel> GetSensorsByFloor(string floor)
         {
