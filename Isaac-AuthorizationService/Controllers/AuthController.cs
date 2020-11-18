@@ -68,9 +68,5 @@ namespace Isaac_AuthorizationService.Controllers
             }
 
         }
-
-
-
-
     }
 }
