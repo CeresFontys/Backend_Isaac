@@ -1,0 +1,11 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run All" type="CompoundRunConfigurationType">
+    <toRun name="Account" type="LaunchSettings" />
+    <toRun name="Gateway" type="LaunchSettings" />
+    <toRun name="Authorization" type="LaunchSettings" />
+    <toRun name="Anomaly" type="LaunchSettings" />
+    <toRun name="Sensor Settings" type="LaunchSettings" />
+    <toRun name="Data" type="LaunchSettings" />
+    <method v="2" />
+  </configuration>
+</component>

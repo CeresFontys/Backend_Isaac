@@ -1,6 +1,6 @@
 using System;
 
-namespace Isaac_API
+namespace Isaac_SensorSettingService
 {
     public class WeatherForecast
     {
