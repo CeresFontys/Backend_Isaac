@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Isaac_AnomalyService
+namespace Isaac_API
 {
     public class Startup
     {
@@ -35,7 +35,9 @@ namespace Isaac_AnomalyService
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseAuthorization();
