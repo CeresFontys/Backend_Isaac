@@ -10,7 +10,7 @@ using Isaac_FloorService.Data;
 
 namespace Isaac_FloorService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/Floor")]
     [ApiController]
     public class FloorController : ControllerBase
     {
@@ -21,14 +21,14 @@ namespace Isaac_FloorService.Controllers
             _context = context;
         }
 
-        // GET: api/Floor
+        // GET: /Floor
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Floor>>> GetFloor()
         {
             return await _context.Floor.ToListAsync();
         }
 
-        // GET: api/Floor/5
+        // GET: /Floor/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Floor>> GetFloor(int id)
         {
@@ -46,7 +46,7 @@ namespace Isaac_FloorService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFloor(string id, Floor floor)
+        public async Task<IActionResult> PutFloor(int id, Floor floor)
         {
             if (id != floor.Id)
             {
@@ -102,7 +102,7 @@ namespace Isaac_FloorService.Controllers
             return floor;
         }
 
-        private bool FloorExists(string id)
+        private bool FloorExists(int id)
         {
             return _context.Floor.Any(e => e.Id == id);
         }
