@@ -117,7 +117,7 @@ namespace Isaac_AnomalyService.Logic
                     //Flag sensor
                     if (!IsValueValid(sensor.Value, SensorNext.Value, minuteDif, maxDifference))
                     {
-                        string writeLine = "Type: " + sensor.Type + "My X and Y: " + sensor.X + "," + sensor.Y + " My value: " + sensor.Value + " My Date time: " + sensor.DateTime + " difference with next sensor is to big!";
+                        string writeLine = "Type: " + sensor.Type + "My X and Y: " + sensor.X + "," + sensor.Y + " My value: " + sensor.Value + " My Date time: " + sensor.DateTime + " difference with next sensor is to wholla big!";
                         Console.WriteLine(writeLine);
                     }
                     
