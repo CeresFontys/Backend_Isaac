@@ -1,25 +1,19 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Isaac_AuthorizationService.Data;
-using Isaac_AuthorizationService.Interfaces;
-using Isaac_AuthorizationService.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Isaac_FloorService.Data;
 
-
-namespace Isaac_AuthorizationService
+namespace Isaac_FloorService
 {
     public class Startup
     {
@@ -33,35 +27,36 @@ namespace Isaac_AuthorizationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-            //services.AddControllers();
             services.AddControllers();
 
             var connectionString = Configuration["MySQL:ConnectionString"];
-          
-            services.AddDbContext<ApplicationDbContext>(o => o.UseMySql(connectionString));
-            services.AddScoped<IUserService, AuthService>();
+            services.AddDbContext<FloorServiceContext>(o => o.UseMySql(connectionString));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //        options.UseMySql(Configuration.GetConnectionString("MySQL:ConnectionString")));
+            services.AddCors();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

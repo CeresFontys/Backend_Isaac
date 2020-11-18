@@ -1,3 +1,4 @@
+using Isaac_DataService.Components.Connections;
 using Isaac_DataService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +23,10 @@ namespace Isaac_DataService
             services.AddSingleton<MqttConnection>();
             services.AddSingleton<FluxConnection>();
 
-            services.AddHostedService<SensorDataService>();
+            services.AddHostedService<RawDataService>();
+            services.AddSingleton<DataOutputService>();
+            services.AddSingleton<IHostedService, DataOutputService>(
+                serviceProvider => serviceProvider.GetService<DataOutputService>());
 
             services.AddControllers();
         }
