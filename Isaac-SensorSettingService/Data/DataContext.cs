@@ -16,6 +16,7 @@ namespace Isaac_SensorSettingService.Data
         }
         public DbSet<SettingsModel> Settings { get; set; }
         public DbSet<SensorModel> Sensors { get; set; }
+        public DbSet<SensorGroupModel> Group { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

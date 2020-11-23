@@ -3,14 +3,16 @@ using System;
 using Isaac_SensorSettingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class SettingContextModelSnapshot : ModelSnapshot
+    [Migration("20201122195629_TabelGroupsAddedFinal2")]
+    partial class TabelGroupsAddedFinal2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace Isaac_SensorSettingService.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("uiIndex")
-                        .HasColumnType("int");
 
                     b.HasKey("GroupId");
 
@@ -56,9 +55,6 @@ namespace Isaac_SensorSettingService.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int>("uiIndex")
-                        .HasColumnType("int");
 
                     b.HasKey("Floor", "X", "Y");
 

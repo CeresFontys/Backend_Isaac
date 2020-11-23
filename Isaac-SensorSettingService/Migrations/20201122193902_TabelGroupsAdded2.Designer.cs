@@ -3,14 +3,16 @@ using System;
 using Isaac_SensorSettingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class SettingContextModelSnapshot : ModelSnapshot
+    [Migration("20201122193902_TabelGroupsAdded2")]
+    partial class TabelGroupsAdded2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,6 @@ namespace Isaac_SensorSettingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("uiIndex")
-                        .HasColumnType("int");
-
                     b.HasKey("GroupId");
 
                     b.ToTable("Group");
@@ -50,19 +49,16 @@ namespace Isaac_SensorSettingService.Migrations
                     b.Property<int>("Y")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int?>("GroupId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("uiIndex")
-                        .HasColumnType("int");
-
                     b.HasKey("Floor", "X", "Y");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupId1");
 
                     b.ToTable("Sensors");
                 });
@@ -88,9 +84,9 @@ namespace Isaac_SensorSettingService.Migrations
 
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorModel", b =>
                 {
-                    b.HasOne("Isaac_SensorSettingService.Models.SensorGroupModel", "Group")
-                        .WithMany("Sensors")
-                        .HasForeignKey("GroupId");
+                    b.HasOne("Isaac_SensorSettingService.Models.SensorGroupModel", "GroupId")
+                        .WithMany()
+                        .HasForeignKey("GroupId1");
                 });
 #pragma warning restore 612, 618
         }

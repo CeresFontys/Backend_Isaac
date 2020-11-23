@@ -33,8 +33,11 @@ namespace Isaac_SensorSettingService
             services.AddDbContext<DataContext>(o => o.UseMySql(connectionString));
 
             services.AddSingleton<FluxConnection>();
+            services.AddTransient<GroupService>();
             services.AddTransient<SettingsService>();
             services.AddTransient<SensorService>();
+            
+
             services.AddCors();
             services.AddControllers();
            
