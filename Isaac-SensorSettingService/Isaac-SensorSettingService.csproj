@@ -3,9 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Isaac_SensorSettingService</RootNamespace>
-
     <UserSecretsId>6a285e8a-9c90-4ce6-aacb-3480f31f4894</UserSecretsId>
- 
   </PropertyGroup>
 
   <ItemGroup>

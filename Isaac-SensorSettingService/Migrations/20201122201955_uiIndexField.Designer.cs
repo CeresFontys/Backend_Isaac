@@ -3,14 +3,16 @@ using System;
 using Isaac_SensorSettingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class SettingContextModelSnapshot : ModelSnapshot
+    [Migration("20201122201955_uiIndexField")]
+    partial class uiIndexField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

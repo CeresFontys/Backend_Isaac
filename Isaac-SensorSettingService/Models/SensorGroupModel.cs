@@ -7,22 +7,18 @@ using System.Threading.Tasks;
 
 namespace Isaac_SensorSettingService.Models
 {
-    [Table("Sensors")]
-    public class SensorModel
+    public class SensorGroupModel
     {
-        public int? GroupId { get; set; }
-        public SensorGroupModel Group { get; set; }
+        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GroupId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
-        [Key, Column(Order = 0)]
         public string Floor { get; set; }
-        [Required]
-        [Key, Column(Order = 1)]
-        public int X { get; set; }
-        [Required]
-        [Key, Column(Order = 2)]
-        public int Y { get; set; }
+        public List<SensorModel> Sensors { get; set; }
         public int uiIndex { get; set; }
+
     }
 }
