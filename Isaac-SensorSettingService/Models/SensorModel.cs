@@ -10,18 +10,19 @@ namespace Isaac_SensorSettingService.Models
     [Table("Sensors")]
     public class SensorModel
     {
+        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public int? GroupId { get; set; }
         public SensorGroupModel Group { get; set; }
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        [Key, Column(Order = 0)]
+        [Required] public string Name { get; set; }
+
+        [Required] 
         public string Floor { get; set; }
         [Required]
-        [Key, Column(Order = 1)]
         public int X { get; set; }
         [Required]
-        [Key, Column(Order = 2)]
         public int Y { get; set; }
         public int uiIndex { get; set; }
     }
