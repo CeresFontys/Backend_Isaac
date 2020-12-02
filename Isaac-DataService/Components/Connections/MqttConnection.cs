@@ -7,11 +7,6 @@ using MQTTnet.Extensions.ManagedClient;
 
 namespace Isaac_DataService.Components.Connections
 {
-    public interface IMqttConnection
-    {
-        IManagedMqttClient Client { get; }
-    }
-
     public class MqttConnection : IMqttConnection
     {
         private readonly ManagedMqttClientOptions options;
@@ -33,7 +28,6 @@ namespace Isaac_DataService.Components.Connections
                     .WithCredentials(username, password)
                     .WithTls().Build()).Build();
             Client = new MqttFactory().CreateManagedMqttClient();
-            StartListen().Wait();
         }
 
         public IManagedMqttClient Client { get; }
@@ -44,6 +38,14 @@ namespace Isaac_DataService.Components.Connections
             {
                 await Client.SubscribeAsync(new MqttTopicFilterBuilder().WithExactlyOnceQoS().WithTopic("#").Build());
                 await Client.StartAsync(options);
+            }
+        }
+        
+        public async Task StopListen()
+        {
+            if (Client.IsStarted)
+            {
+                await Client.StopAsync();
             }
         }
     }
