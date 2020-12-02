@@ -5,7 +5,7 @@ using MQTTnet;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.ManagedClient;
 
-namespace Isaac_DataService.Services
+namespace Isaac_DataService.Components.Connections
 {
     public interface IMqttConnection
     {
@@ -33,12 +33,12 @@ namespace Isaac_DataService.Services
                     .WithCredentials(username, password)
                     .WithTls().Build()).Build();
             Client = new MqttFactory().CreateManagedMqttClient();
-            StartClient().Wait();
+            StartListen().Wait();
         }
 
         public IManagedMqttClient Client { get; }
 
-        public async Task StartClient()
+        public async Task StartListen()
         {
             if (!Client.IsStarted)
             {
