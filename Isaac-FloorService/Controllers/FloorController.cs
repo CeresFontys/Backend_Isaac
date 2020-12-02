@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Isaac_FloorService;
 using Isaac_FloorService.Data;
+using Isaac_FloorService.Models;
 
 namespace Isaac_FloorService.Controllers
 {
@@ -78,12 +80,16 @@ namespace Isaac_FloorService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Floor>> PostFloor(Floor floor)
+        public async Task<ActionResult<Floor>> PostFloor([FromForm] FloorRequest floorRequest)
         {
-            _context.Floor.Add(floor);
+            await using var stream = Request.Form.Files.First().OpenReadStream();
+            await using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            floorRequest.Floor.Image = memoryStream.ToArray();
+            _context.Floor.Add(floorRequest.Floor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFloor", new { id = floor.Id }, floor);
+            return CreatedAtAction("GetFloor", new { id = floorRequest.Floor.Id }, floorRequest.Floor);
         }
 
         // DELETE: api/Floor/5
