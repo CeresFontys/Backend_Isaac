@@ -16,9 +16,11 @@ namespace Isaac_AnomalyService.Service
         private readonly string url;
         private readonly string username;
         private readonly string password;
+        private int _fluxLoopConnection;
 
         public FluxConnection(IConfiguration configuration)
         {
+            _fluxLoopConnection = configuration.GetValue<int>("LoopParameters:FluxLoopMinutes");
             username = configuration.GetValue<string>("Influx:Username");
             password = configuration.GetValue<string>("Influx:Password");
             url = "http://" +
@@ -40,10 +42,9 @@ namespace Isaac_AnomalyService.Service
 
         public async IAsyncEnumerable<SensorData> LoadSensorData(){
 
-            var flux = "from(bucket:\"sensordata\") |> range(start: -5m)";
+            var flux = $"from(bucket:\"sensordata\") |> range(start: -{_fluxLoopConnection}m)";
             var fluxTables = await Client.GetQueryApi().QueryAsync(flux, orgId);
-            List<SensorData> dataList = new List<SensorData>();
-
+            
             foreach(FluxTable fluxTable in fluxTables){
 
                 var fluxRecords = fluxTable.Records;

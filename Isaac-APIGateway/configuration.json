@@ -10,7 +10,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/data/{catch}",
-      "UpstreamHttpMethod": [ "POST", "GET" ]
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ]
     },
     {
       "DownstreamPathTemplate": "/",
@@ -22,7 +25,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/settings/{catch}",
-      "UpstreamHttpMethod": [ "POST", "GET" ]
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ]
     },
     {
       "DownstreamPathTemplate": "/",
@@ -34,7 +40,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/anomaly/{catch}",
-      "UpstreamHttpMethod": [ "POST", "GET" ]
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ]
     },
     {
       "DownstreamPathTemplate": "/",
@@ -46,7 +55,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/account/{catch}",
-      "UpstreamHttpMethod": [ "POST", "GET" ]
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ]
     },
     {
       "DownstreamPathTemplate": "/",
@@ -58,11 +70,13 @@
         }
       ],
       "UpstreamPathTemplate": "/api/authorization/{catch}",
-      "UpstreamHttpMethod": [ "POST", "GET" ]
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ]
     }
   ],
   "GlobalConfiguration": {
     "BaseUrl": "https://localhost"
   }
-
-} 
+}

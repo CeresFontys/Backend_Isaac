@@ -14,6 +14,5 @@ namespace Isaac_AnomalyService.Data
         {
         }
 
-        public DbSet<Isaac_AnomalyService.Models.ErrorLog> ErrorLog { get; set; }
     }
 }

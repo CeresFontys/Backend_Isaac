@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InfluxDB.Client.Api.Domain;
+using Isaac_AnomalyService.Components;
+using Isaac_AnomalyService.Components.Logic;
 using Isaac_AnomalyService.Components.Services;
 using Isaac_AnomalyService.Logic;
 using Isaac_AnomalyService.Models;
@@ -20,19 +22,21 @@ namespace Isaac_AnomalyService.Controllers
     {
         private AnomalyService _anomalyService;
         private FluxConnection _fluxConnection;
+        private WeatherApiConnection _weatherApi;
 
 
-        public AnomalyController( AnomalyService anomalyService, FluxConnection fluxConnection)
+        public AnomalyController( AnomalyService anomalyService, FluxConnection fluxConnection, WeatherApiConnection weatherApi)
         {
             _anomalyService = anomalyService;
             _fluxConnection = fluxConnection;
+            _weatherApi = weatherApi;
         }
 
         // GET: api/<AnomalyController>
         [HttpGet]
         public async Task Get()
         {
-            await _anomalyService.Get();
+            
         }
 
         // GET api/<AnomalyController>/5
@@ -50,6 +54,12 @@ namespace Isaac_AnomalyService.Controllers
                 yield return JsonConvert.SerializeObject(sensorData);
             }
         }
+
+        //[HttpGet("testweather")]
+        //public async Task<WeatherApiData> GetWeather()
+        //{
+        //    return await _weatherApi.GetWeatherApi();
+        //}
 
 
         // POST api/<AnomalyController>
