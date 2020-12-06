@@ -32,25 +32,25 @@ namespace Isaac_AuthorizationService.Services
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
 
-            //var dbUser = _dbContext.Users.FirstOrDefault(x => x.Email == user.Email);
-            //if (dbUser == null)
-            //{
-            //    //Hashing the password
-            //    user.Password = BC.HashPassword(user.Password);
-            //    _dbContext.Users.Add(user);
-            //    _dbContext.SaveChanges();
-            //}
-            //else
-            //{
-            //    throw new AlreadyExistsException("User already exists");
-            //}
+            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Email == user.Email);
+            if (dbUser == null)
+            {
+                //Hashing the password
+                user.Password = BC.HashPassword(user.Password);
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
+            else
+            {
+                throw new AlreadyExistsException("User already exists");
+            }
         }
 
-        public JwtUser Authenticate(string username, string password)
+        public JwtUser Authenticate(string email, string password)
         {
             //to change
             var jwtKey = "TryToGuessThisPassword";
-            var user = _dbContext.Users.FirstOrDefault(u => u.Email == username);
+            var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
             //bool verified = BC.Verify(password, user.Password);
             //Check if the user exists and verifies the hashed password
             if (user == null || !BC.Verify(password, user.Password))
