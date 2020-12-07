@@ -3,16 +3,14 @@ using System;
 using Isaac_SensorSettingService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_SensorSettingService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201122192815_AddedGroupsTabelfix")]
-    partial class AddedGroupsTabelfix
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace Isaac_SensorSettingService.Migrations
 
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorGroupModel", b =>
                 {
-                    b.Property<int>("GroupId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -33,21 +31,20 @@ namespace Isaac_SensorSettingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("GroupId");
+                    b.HasKey("Id");
 
                     b.ToTable("Group");
                 });
 
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorModel", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<string>("Floor")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("X")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
@@ -56,7 +53,13 @@ namespace Isaac_SensorSettingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("Floor", "X", "Y");
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
@@ -85,7 +88,7 @@ namespace Isaac_SensorSettingService.Migrations
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorModel", b =>
                 {
                     b.HasOne("Isaac_SensorSettingService.Models.SensorGroupModel", "Group")
-                        .WithMany()
+                        .WithMany("Sensors")
                         .HasForeignKey("GroupId");
                 });
 #pragma warning restore 612, 618

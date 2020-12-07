@@ -29,8 +29,10 @@ namespace Isaac_SensorSettingService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             var connectionString = Configuration["MySQL:ConnectionString"];
-            services.AddDbContext<DataContext>(o => o.UseMySql(connectionString));
+            services.AddDbContext<DataContext>(o =>
+                o.UseMySql(connectionString));
 
             services.AddSingleton<FluxConnection>();
             services.AddTransient<GroupService>();
@@ -38,7 +40,7 @@ namespace Isaac_SensorSettingService
             services.AddTransient<SensorService>();
             
 
-            services.AddCors();
+            
             services.AddControllers();
            
         }

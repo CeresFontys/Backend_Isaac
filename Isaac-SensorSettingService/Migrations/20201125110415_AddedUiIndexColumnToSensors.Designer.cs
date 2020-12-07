@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Isaac_SensorSettingService.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201122201955_uiIndexField")]
-    partial class uiIndexField
+    [Migration("20201125110415_AddedUiIndexColumnToSensors")]
+    partial class AddedUiIndexColumnToSensors
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Isaac_SensorSettingService.Migrations
 
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorGroupModel", b =>
                 {
-                    b.Property<int>("GroupId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -33,24 +33,20 @@ namespace Isaac_SensorSettingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("uiIndex")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupId");
+                    b.HasKey("Id");
 
                     b.ToTable("Group");
                 });
 
             modelBuilder.Entity("Isaac_SensorSettingService.Models.SensorModel", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
                     b.Property<string>("Floor")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("X")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
@@ -59,10 +55,16 @@ namespace Isaac_SensorSettingService.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("uiIndex")
+                    b.Property<int>("UiIndex")
                         .HasColumnType("int");
 
-                    b.HasKey("Floor", "X", "Y");
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 

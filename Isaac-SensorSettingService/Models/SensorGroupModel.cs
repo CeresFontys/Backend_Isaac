@@ -12,13 +12,11 @@ namespace Isaac_SensorSettingService.Models
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GroupId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
         public string Floor { get; set; }
-        public List<SensorModel> Sensors { get; set; }
-        public int uiIndex { get; set; }
-
+        public ICollection<SensorModel> Sensors { get; set; }
     }
 }

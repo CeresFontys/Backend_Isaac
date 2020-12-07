@@ -2,19 +2,13 @@
 
 namespace Isaac_SensorSettingService.Migrations
 {
-    public partial class uiIndexField : Migration
+    public partial class AddedUiIndexColumnToSensors : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "uiIndex",
+                name: "UiIndex",
                 table: "Sensors",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "uiIndex",
-                table: "Group",
                 nullable: false,
                 defaultValue: 0);
         }
@@ -22,12 +16,8 @@ namespace Isaac_SensorSettingService.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "uiIndex",
+                name: "UiIndex",
                 table: "Sensors");
-
-            migrationBuilder.DropColumn(
-                name: "uiIndex",
-                table: "Group");
         }
     }
 }

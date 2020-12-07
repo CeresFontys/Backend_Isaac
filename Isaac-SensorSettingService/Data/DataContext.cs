@@ -20,9 +20,8 @@ namespace Isaac_SensorSettingService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SensorModel>()
-                .HasKey(m => new { m.Floor, m.X, m.Y });
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SensorGroupModel>().HasMany<SensorModel>((model) => model.Sensors).WithOne((model)=> model.Group);
         }
-
     }
 }

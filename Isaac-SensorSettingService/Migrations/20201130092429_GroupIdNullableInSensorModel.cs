@@ -2,7 +2,7 @@
 
 namespace Isaac_SensorSettingService.Migrations
 {
-    public partial class TabelGroupsAddedFinal2 : Migration
+    public partial class GroupIdNullableInSensorModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,7 +22,7 @@ namespace Isaac_SensorSettingService.Migrations
                 table: "Sensors",
                 column: "GroupId",
                 principalTable: "Group",
-                principalColumn: "GroupId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
 
@@ -45,7 +45,7 @@ namespace Isaac_SensorSettingService.Migrations
                 table: "Sensors",
                 column: "GroupId",
                 principalTable: "Group",
-                principalColumn: "GroupId",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
     }
