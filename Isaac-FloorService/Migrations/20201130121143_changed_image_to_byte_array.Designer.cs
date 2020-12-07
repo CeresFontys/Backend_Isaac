@@ -3,14 +3,16 @@ using System;
 using Isaac_FloorService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_FloorService.Migrations
 {
     [DbContext(typeof(FloorServiceContext))]
-    partial class FloorServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20201130121143_changed_image_to_byte_array")]
+    partial class changed_image_to_byte_array
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

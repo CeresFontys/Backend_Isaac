@@ -15,15 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-SensorSettingService"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Isaac-AuthorizationService", "Isaac-AuthorizationService\Isaac-AuthorizationService.csproj", "{79CAC102-FD62-4676-B35B-E37DE87D6BE0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnit-AnomalyService", "XUnit-AnomalyService\XUnit-AnomalyService.csproj", "{B3AD04D8-CA11-455F-B7C0-2D058548C503}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-AnomalyService", "XUnit-AnomalyService\XUnit-AnomalyService.csproj", "{B3AD04D8-CA11-455F-B7C0-2D058548C503}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnit-AuthorizationService", "XUnit-AuthorizationService\XUnit-AuthorizationService.csproj", "{15B591AC-A428-4953-811F-84840326A73C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-AuthorizationService", "XUnit-AuthorizationService\XUnit-AuthorizationService.csproj", "{15B591AC-A428-4953-811F-84840326A73C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnit-DataService", "XUnit-DataService\XUnit-DataService.csproj", "{C5BAFCBA-0A98-4C88-AE6E-CD4A3C0DAF46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-DataService", "XUnit-DataService\XUnit-DataService.csproj", "{C5BAFCBA-0A98-4C88-AE6E-CD4A3C0DAF46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnit-FloorService", "XUnit-FloorService\XUnit-FloorService.csproj", "{4184F4FA-E969-4BD1-881C-6526138A87DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-FloorService", "XUnit-FloorService\XUnit-FloorService.csproj", "{4184F4FA-E969-4BD1-881C-6526138A87DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnit-SensorSettingService", "XUnit-SensorSettingService\XUnit-SensorSettingService.csproj", "{B2479639-E0B0-47CD-A310-04CF7AF30562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-SensorSettingService", "XUnit-SensorSettingService\XUnit-SensorSettingService.csproj", "{B2479639-E0B0-47CD-A310-04CF7AF30562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
