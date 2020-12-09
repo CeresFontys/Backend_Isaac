@@ -6,7 +6,6 @@ using InfluxDB.Client.Api.Domain;
 using Isaac_AnomalyService.Components;
 using Isaac_AnomalyService.Components.Logic;
 using Isaac_AnomalyService.Components.Services;
-using Isaac_AnomalyService.Logic;
 using Isaac_AnomalyService.Models;
 using Isaac_AnomalyService.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +45,7 @@ namespace Isaac_AnomalyService.Controllers
             return "value";
         }
 
-        [HttpGet("test")]
+        [HttpGet("ReadIncomingSensors")]
         public async IAsyncEnumerable<string> GetList(int id)
         {
             await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())

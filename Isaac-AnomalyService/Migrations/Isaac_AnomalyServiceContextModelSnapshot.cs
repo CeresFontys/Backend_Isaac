@@ -17,23 +17,32 @@ namespace Isaac_AnomalyService.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Isaac_AnomalyService.Models.ErrorLog", b =>
+            modelBuilder.Entity("Isaac_AnomalyService.Models.SensorError", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTime>("ErrorOccurrence")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("FlagReason")
+                    b.Property<DateTime>("DateTimeNext")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Error")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Floor")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
+
+                    b.Property<double>("ValueFirst")
+                        .HasColumnType("double");
+
+                    b.Property<double>("ValueSecond")
+                        .HasColumnType("double");
 
                     b.Property<int>("X")
                         .HasColumnType("int");
@@ -41,9 +50,9 @@ namespace Isaac_AnomalyService.Migrations
                     b.Property<int>("Y")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.ToTable("ErrorLog");
+                    b.ToTable("Errors");
                 });
 #pragma warning restore 612, 618
         }

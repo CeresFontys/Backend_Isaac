@@ -14,5 +14,6 @@ namespace Isaac_AnomalyService.Data
         {
         }
 
+        public DbSet<SensorError> Errors { get; set; }
     }
 }

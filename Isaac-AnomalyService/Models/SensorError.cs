@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,14 +9,17 @@ namespace Isaac_AnomalyService.Models
 
     public class SensorError
     {
-        public int X;
-        public int Y;
-        public string Floor;
-        public string Error;
-        public DateTime DateTime;
-        public ErrorType Type;
-        public double ValueFirst;
-        public double ValueSecond;
+        [Key]
+        public long id { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Floor { get; set; }
+        public string Error { get; set; }
+        public DateTime DateTime { get; set; }
+        public DateTime DateTimeNext { get; set; }
+        public ErrorType Type { get; set; }
+        public double ValueFirst { get; set; }
+        public double ValueSecond { get; set; }
 
         public enum ErrorType
         {
@@ -24,21 +28,6 @@ namespace Isaac_AnomalyService.Models
             NormalTop,
             NormalBottom,
             NextDif,
-            PrevDif
         }
-
-        public SensorError(int x, int y, string floor, string error, DateTime dateTime, ErrorType type, double valueFirst, double valueSecond=-1)
-        {
-            X = x;
-            Y = y;
-            Floor = floor;
-            Error = error;
-            DateTime = dateTime;
-            Type = type;
-            ValueFirst = valueFirst;
-            ValueSecond = valueSecond;
-        }
-
-
     }
 }

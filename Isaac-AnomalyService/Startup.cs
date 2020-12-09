@@ -17,7 +17,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Isaac_AnomalyService.Data;
-using Isaac_AnomalyService.Logic;
 
 namespace Isaac_AnomalyService
 {
@@ -35,16 +34,19 @@ namespace Isaac_AnomalyService
         {
             //services.AddSingleton<MqttConnection>();
             services.AddSingleton<FluxConnection>();
+            var connectionString = Configuration["MySQL:ConnectionString"];
+            services.AddDbContext<Isaac_AnomalyServiceContext>(options =>
+                options.UseMySql(connectionString));
             services.AddSingleton<OutlierLeaves>();
             services.AddLogging();
             services.AddHttpClient();
             services.AddTransient<WeatherApiConnection>();
             services.AddHostedService<AnomalyService>();
 
+            
+
             services.AddControllers();
-            var connectionString = Configuration["MySQL:ConnectionString"];
-            services.AddDbContext<Isaac_AnomalyServiceContext>(options =>
-                    options.UseMySql(connectionString));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

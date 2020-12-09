@@ -1,5 +1,7 @@
-﻿using Isaac_AnomalyService.Models;
+﻿using System.Collections.Generic;
+using Isaac_AnomalyService.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Isaac_AnomalyService.Components.Logic
 {
@@ -12,13 +14,20 @@ namespace Isaac_AnomalyService.Components.Logic
             paramaterTemp = configuration.GetValue<double>("AlgoConfig:ParameterBottomTemp");
             parameterHum = configuration.GetValue<double>("AlgoConfig:ParameterBottomHum");
         }
-        public SensorError Algorithm(SensorData sensor)
+        public SensorError Algorithm(SensorData sensor, List<SensorData> sensorDataList)
         {
             double parameter = sensor.Type == DataType.Temperature ? paramaterTemp : parameterHum;
 
             if (sensor.Value <= parameter)
             {
-                SensorError sensorError = new SensorError(sensor.X, sensor.Y, sensor.Floor.ToString(), "Sensor exceeds normal given parameters: " + sensor.Value, sensor.DateTime, SensorError.ErrorType.NormalBottom, sensor.Value);
+                var sensorError = new SensorError();
+                sensorError.X = sensor.X;
+                sensorError.Y = sensor.Y;
+                sensorError.Floor = sensor.Floor;
+                sensorError.DateTime = sensor.DateTime;
+                sensorError.Error = "Sensor exceeds normal given bottom parameters: ";
+                sensorError.ValueFirst = sensor.Value;
+                sensorError.Type = SensorError.ErrorType.NormalBottom;
                 return sensorError;
             }
             

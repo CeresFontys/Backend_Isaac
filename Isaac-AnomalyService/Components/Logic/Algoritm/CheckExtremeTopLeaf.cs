@@ -16,14 +16,21 @@ namespace Isaac_AnomalyService.Components.Logic
             paramaterTemp = configuration.GetValue<double>("AlgoConfig:ParameterExtremeTopTemp");
             parameterHum = configuration.GetValue<double>("AlgoConfig:ParameterExtremeTopHum");
         }
-        public SensorError Algorithm(SensorData sensor)
+        public SensorError Algorithm(SensorData sensor, List<SensorData> sensorDataList)
         {
             double parameter = sensor.Type == DataType.Temperature ? paramaterTemp : parameterHum;
 
                 if (sensor.Value >= parameter)
                 {
-                    SensorError sensorError = new SensorError(sensor.X, sensor.Y, sensor.Floor.ToString(), "Sensor exceeds extreme given parameters: " + sensor.Value, sensor.DateTime, SensorError.ErrorType.ExtremeTop, sensor.Value);
-                    return sensorError;
+                var sensorError = new SensorError();
+                sensorError.X = sensor.X;
+                sensorError.Y = sensor.Y;
+                sensorError.Floor = sensor.Floor;
+                sensorError.DateTime = sensor.DateTime;
+                sensorError.Error = "Sensor exceeds extreme given top parameters: ";
+                sensorError.ValueFirst = sensor.Value;
+                sensorError.Type = SensorError.ErrorType.ExtremeTop; 
+                return sensorError;
                 }
 
             return null;
