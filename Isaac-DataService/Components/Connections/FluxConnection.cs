@@ -1,30 +1,29 @@
 ﻿using System.Threading.Tasks;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
+using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Configuration;
 
 namespace Isaac_DataService.Components.Connections
 {
     public class FluxConnection : IFluxConnection
     {
-        public readonly string OrgId;
-        private readonly string password;
-        private readonly string url;
-        private readonly string username;
+        private readonly string _orgId;
+        public string BucketName { get; private set; }
 
         public FluxConnection(IConfiguration configuration)
         {
-            username = configuration.GetValue<string>("Influx:Username");
-            password = configuration.GetValue<string>("Influx:Password");
-            url = "http://" +
-                  configuration.GetValue<string>("Influx:IP") +
-                  ":" +
-                  configuration.GetValue<string>("Influx:Port");
+            var username = configuration.GetValue<string>("Influx:Username");
+            var password = configuration.GetValue<string>("Influx:Password");
+            var url = "http://" +
+                      configuration.GetValue<string>("Influx:IP") +
+                      ":" +
+                      configuration.GetValue<string>("Influx:Port");
 
-            OrgId = configuration.GetValue<string>("Influx:Organisation");
+            _orgId = configuration.GetValue<string>("Influx:Organisation");
 
             var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray())
-                .Org(OrgId)
+                .Org(_orgId)
                 .Url(url).Build();
 
             Client = InfluxDBClientFactory.Create(options);
@@ -32,26 +31,34 @@ namespace Isaac_DataService.Components.Connections
 
         public InfluxDBClient Client { get; }
 
-        public async Task EnsureBucket(string name, BucketRetentionRules retentionRules)
+        private async Task EnsureBucket(string name)
         {
             var api = Client?.GetBucketsApi();
             if (api != null && await api.FindBucketByNameAsync(name) == null)
-                await api.CreateBucketAsync(name, retentionRules, OrgId);
+                await api.CreateBucketAsync(name,
+                    new BucketRetentionRules {EverySeconds = 30, Type = BucketRetentionRules.TypeEnum.Expire},
+                    _orgId);
         }
 
-        public async Task<bool> SetRetention(string name, BucketRetentionRules rule)
+        public async Task SetBucket(string name)
         {
-            var api = Client.GetBucketsApi();
-            var oldBucket = await api.FindBucketByNameAsync(name);
-            var oldRule = oldBucket.RetentionRules.Find(retentionRules =>
-                retentionRules.Type == BucketRetentionRules.TypeEnum.Expire);
-            if (oldRule != null) oldBucket.RetentionRules.Remove(oldRule);
-            oldBucket.RetentionRules.Add(rule);
-            var newBucket = await api.UpdateBucketAsync(oldBucket);
+            BucketName = name;
+            await EnsureBucket(BucketName);
+        }
 
-            if (newBucket.RetentionRules.Contains(rule)) return true;
+        public void Dispose()
+        {
+            Client.Dispose();
+        }
 
-            return false;
+        public async Task WritePointAsync(PointData data)
+        {
+            await Client.GetWriteApiAsync().WritePointAsync(data);
+        }
+
+        public async Task<Ready> ReadyAsync()
+        {
+           return await Client.ReadyAsync();
         }
     }
 }
