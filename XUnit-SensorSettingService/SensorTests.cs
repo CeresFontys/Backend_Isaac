@@ -1,9 +1,10 @@
 using System;
+using Isaac_SensorSettingService.Compontents;
 using Xunit;
 
 namespace XUnit_SensorSettingService
 {
-    public class UnitTest1
+    public class SensorTests
     {
         [Fact]
         public void Test1()

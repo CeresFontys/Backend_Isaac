@@ -16,12 +16,12 @@ namespace Isaac_SensorSettingService.Data
         }
         public DbSet<SettingsModel> Settings { get; set; }
         public DbSet<SensorModel> Sensors { get; set; }
+        public DbSet<SensorGroupModel> Group { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SensorModel>()
-                .HasKey(m => new { m.Floor, m.X, m.Y });
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SensorGroupModel>().HasMany<SensorModel>((model) => model.Sensors).WithOne((model)=> model.Group);
         }
-
     }
 }

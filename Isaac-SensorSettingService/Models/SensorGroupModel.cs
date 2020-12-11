@@ -4,28 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using CsvHelper.Configuration.Attributes;
 
 namespace Isaac_SensorSettingService.Models
 {
-    [Table("Sensors")]
-    public class SensorModel
+    public class SensorGroupModel
     {
         [Required]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required] 
+        [Required]
         public string Name { get; set; }
-
-        [Required] 
+        [Required]
         public string Floor { get; set; }
-        [Required]
-        public int X { get; set; }
-        [Required]
-        public int Y { get; set; }
-
-        public int? GroupId { get; set; }
-        public SensorGroupModel Group { get; set; }
+        public ICollection<SensorModel> Sensors { get; set; }
     }
 }
