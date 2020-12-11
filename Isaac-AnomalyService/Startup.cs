@@ -6,6 +6,7 @@ using Isaac_AnomalyService.Components;
 using Isaac_AnomalyService.Components.Logic;
 using Isaac_AnomalyService.Components.Logic.Algoritm;
 using Isaac_AnomalyService.Components.Services;
+using Isaac_AnomalyService.Controllers;
 using Isaac_AnomalyService.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,10 +41,21 @@ namespace Isaac_AnomalyService
             services.AddSingleton<OutlierLeaves>();
             services.AddLogging();
             services.AddHttpClient();
+            services.AddTransient<ErrorHub>();
             services.AddTransient<WeatherApiConnection>();
             services.AddHostedService<AnomalyService>();
+            services.AddSignalR();
+            services.AddCors(options => options.AddPolicy(name: "MyAllowSpecificOrigins",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000");
+                    builder.AllowCredentials();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                }));
 
-            
+
+
 
             services.AddControllers();
             
@@ -61,8 +73,13 @@ namespace Isaac_AnomalyService
 
             app.UseAuthorization();
 
+
+            app.UseCors("MyAllowSpecificOrigins");
+                
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ErrorHub>("/errorLogHub");
                 endpoints.MapControllers();
             });
         }

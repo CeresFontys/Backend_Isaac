@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Isaac_AnomalyService.Components.Logic.Algoritm;
+using Isaac_AnomalyService.Controllers;
 using Isaac_AnomalyService.Data;
 using Isaac_AnomalyService.Models;
 using Isaac_AnomalyService.Service;
@@ -30,16 +31,18 @@ namespace Isaac_AnomalyService.Components.Services
         private Thread thread;
         private readonly ILogger<AnomalyService> _logger;
         private IServiceScopeFactory _scopeFactory;
+        private ErrorHub _errorHub;
 
         
         
 
-        public AnomalyService(FluxConnection fluxConnection, WeatherApiConnection weatherApiConnection, IConfiguration configuration, ILogger<AnomalyService> logger, OutlierLeaves outlierLeaves, IServiceScopeFactory scopeFactory)
+        public AnomalyService(FluxConnection fluxConnection, WeatherApiConnection weatherApiConnection, IConfiguration configuration, ILogger<AnomalyService> logger, OutlierLeaves outlierLeaves, IServiceScopeFactory scopeFactory, ErrorHub errorHub)
         {
             _weatherApiConnection = weatherApiConnection;
             _logger = logger;
             _outlierLeaves = outlierLeaves;
             _scopeFactory = scopeFactory;
+            _errorHub = errorHub;
             _serviceloopMinutes = configuration.GetValue<int>("LoopParameters:ServiceLoopMinutes");
             _logger.LogWarning("Log Test Anomaly aangemaakt");
         }
@@ -91,8 +94,10 @@ namespace Isaac_AnomalyService.Components.Services
                         var dbContext = scope.ServiceProvider.GetRequiredService<Isaac_AnomalyServiceContext>();
                         await dbContext.AddRangeAsync(list);
                         await dbContext.SaveChangesAsync();
+                        await _errorHub.SendError(list);
                     }
                 }
+
                 
 
                 var time = TimeSpan.FromSeconds(_serviceloopMinutes) - sw.Elapsed;
