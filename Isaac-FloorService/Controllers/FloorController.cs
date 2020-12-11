@@ -48,14 +48,30 @@ namespace Isaac_FloorService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFloor(int id, Floor floor)
+        public async Task<IActionResult> PutFloor(int id, [FromForm] FloorRequest floorRequest)
         {
-            if (id != floor.Id)
+            if (id != floorRequest.Floor.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(floor).State = EntityState.Modified;
+            if (floorRequest.File != null)
+            {
+                await using var stream = Request.Form.Files.First().OpenReadStream();
+                await using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                floorRequest.Floor.Image = memoryStream.ToArray();
+
+                _context.Floor.Update(floorRequest.Floor);
+            }
+            else
+            {
+                var floor = await _context.Floor.FindAsync(id);
+                floor.Length = floorRequest.Floor.Length;
+                floor.Width = floorRequest.Floor.Width;
+                floor.Name = floorRequest.Floor.Name;
+            }
+
 
             try
             {
