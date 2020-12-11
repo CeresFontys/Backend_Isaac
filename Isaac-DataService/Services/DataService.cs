@@ -26,12 +26,12 @@ namespace Isaac_DataService.Services
         private readonly List<(string, string, string)> _uniqueSensors;
         private readonly ILogger<DataService> _logger;
 
-        public DataService(InfluxService influx, FluxConnection flux, IConfiguration configuration, ILogger<DataService> logger, MqttConnection mqtt)
+        public DataService(InfluxService influx, IFluxConnection flux, IConfiguration configuration, ILogger<DataService> logger, MqttConnection mqtt)
         {
             _influx = influx;
             _logger = logger;
             _uniqueSensors = new List<(string, string, string)>();
-            _queryApi = flux.Client.GetQueryApi();
+            _queryApi = ((FluxConnection)flux).Client.GetQueryApi();
             _model = new SensorDataModel();
             _sourceBucket = configuration.GetValue<string>("Influx:BucketNameDownsampled");
             _sourceTopic = configuration.GetValue<string>("MQTT:Topic");

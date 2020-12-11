@@ -20,8 +20,7 @@ namespace Isaac_DataService.Services
         private readonly ConcurrentQueue<PointData> _queue;
 
         public IReadOnlyCollection<PointData> QueueData => _queue.ToArray();
-       
-
+        
         public InfluxService(IFluxConnection connection, ILogger<InfluxService> logger, IEnumerable<PointData> data = null)
         {
             _connection = connection;

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Isaac-DataService</RootNamespace>
+    <RuntimeIdentifiers>win10-x64;linux-musl-x64</RuntimeIdentifiers>
     <UserSecretsId>1e213de4-ee7c-4eda-a4e2-0611e5e84df0</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
