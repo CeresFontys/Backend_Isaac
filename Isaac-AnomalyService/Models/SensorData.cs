@@ -24,4 +24,6 @@ namespace Isaac_AnomalyService.Models
         Temperature,
         Humidity
     }
+
+    
 }
