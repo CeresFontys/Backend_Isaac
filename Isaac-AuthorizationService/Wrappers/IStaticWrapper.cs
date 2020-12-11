@@ -4,6 +4,6 @@ namespace Isaac_AuthorizationService.Helpers
 {
     public interface IStaticWrapper
     {
-        void StaticUserAdd(User user);
+        bool StaticUserAuthenticate(User user);
     }
 }

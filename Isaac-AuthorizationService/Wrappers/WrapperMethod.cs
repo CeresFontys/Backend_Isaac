@@ -9,21 +9,16 @@ namespace Isaac_AuthorizationService.Helpers
 {
     public class WrapperMethod
     {
-        private readonly ApplicationDbContext _dbContext;
         IStaticWrapper _wrapper;
 
         public WrapperMethod(IStaticWrapper wrapper)
         {
             _wrapper = wrapper;
         }
-        public WrapperMethod(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
 
-        public User AddStaticUser(User user)
+        public User AuthenticateUser(User user)
         {
-            _wrapper.StaticUserAdd(user);
+            _wrapper.StaticUserAuthenticate(user);
             return user;
         }
     }

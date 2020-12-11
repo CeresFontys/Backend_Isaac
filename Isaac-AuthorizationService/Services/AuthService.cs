@@ -24,6 +24,7 @@ namespace Isaac_AuthorizationService.Services
         {
             _dbContext = dbContext;
         }
+        
 
         public void Create(User user)
         {
@@ -31,19 +32,6 @@ namespace Isaac_AuthorizationService.Services
             user.Password = BC.HashPassword(user.Password);
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
-
-            var dbUser = _dbContext.Users.FirstOrDefault(x => x.Email == user.Email);
-            if (dbUser == null)
-            {
-                //Hashing the password
-                user.Password = BC.HashPassword(user.Password);
-                _dbContext.Users.Add(user);
-                _dbContext.SaveChanges();
-            }
-            else
-            {
-                throw new AlreadyExistsException("User already exists");
-            }
         }
 
         public JwtUser Authenticate(string email, string password)

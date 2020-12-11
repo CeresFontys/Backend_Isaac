@@ -19,10 +19,11 @@ namespace XUnit_AuthorizationService
 
         public AuthServiceTest()
         {
+
             _users = new User
             {
-                Id = 1,
                 Email = "Demirci.Emirhan@outlook.com",
+                Id = 1,
                 Password = "test1234"
             };
         }
@@ -34,39 +35,24 @@ namespace XUnit_AuthorizationService
             var dbSetMock = new Mock<DbSet<User>>();
             dbSetMock.Setup(x => x.Add(It.IsAny<User>()));
             context.Setup(x => x.Set<User>()).Returns(dbSetMock.Object);
-            //var wrapper = new StaticWrapper();
-            //var wm = new WrapperMethod(wrapper);
-            //var output = wm.AddStaticUser(_users);
+
             var authService = new AuthService(context.Object);
-
-            //var userTestList = new List<User>() { _users };
-
-            //dbSetMock.As<IQueryable<User>>().Setup(x => x.Provider).Returns(userTestList.AsQueryable().Provider);
-            //dbSetMock.As<IQueryable<User>>().Setup(x => x.Expression).Returns(userTestList.AsQueryable().Expression);
-            //dbSetMock.As<IQueryable<User>>().Setup(x => x.ElementType).Returns(userTestList.AsQueryable().ElementType);
-            //dbSetMock.As<IQueryable<User>>().Setup(x => x.GetEnumerator()).Returns(userTestList.AsQueryable().GetEnumerator());
 
             // Act
             authService.Create(_users);
-            //wrapper.StaticUserAdd(output);
-
-            // Assert
             context.Verify(x => x.SaveChanges(), Times.Once);
         }
         [Fact]
         public void Login_User()
         {
-            var context = new Mock<ApplicationDbContext>();
-            var dbSetMock = new Mock<DbSet<User>>();
-            dbSetMock.Setup(x => x.Find(It.IsAny<User>()));
-            context.Setup(x => x.Set<User>()).Returns(dbSetMock.Object);
-            var authService = new AuthService(context.Object);
+            var wrapper = new StaticWrapper();
 
-            //Act
-            var ewa = authService.Authenticate(_users.Email, _users.Password);
+            var wm = new WrapperMethod(wrapper);
+
+            var output = wm.AuthenticateUser(_users);
 
             //Assert
-            context.Verify(x => x.SaveChanges());
+            Xunit.Assert.Equal(1, output.Id);
         }
     }
 }

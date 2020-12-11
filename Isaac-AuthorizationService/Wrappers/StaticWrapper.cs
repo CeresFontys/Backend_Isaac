@@ -9,10 +9,31 @@ namespace Isaac_AuthorizationService.Helpers
 {
     public class StaticWrapper : IStaticWrapper
     {
-        AuthService auth = new AuthService();
-        public void StaticUserAdd(User user)
+        public bool StaticUserAuthenticate(User user)
         {
-            auth.Create(user);
+            var ewa = UserTestData(user.Email, user.Password);
+            if (ewa == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool UserTestData(string email, string password)
+        {
+            var _email = "Demirci.Emirhan@outlook.com";
+            var _password = "test1234";
+
+            if (_email == email && _password == password)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
