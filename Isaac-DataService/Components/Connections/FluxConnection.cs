@@ -3,6 +3,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Isaac_DataService.Components.Connections
 {
@@ -11,7 +12,7 @@ namespace Isaac_DataService.Components.Connections
         private readonly string _orgId;
         public string BucketName { get; private set; }
 
-        public FluxConnection(IConfiguration configuration)
+        public FluxConnection(IConfiguration configuration, ILogger<FluxConnection> logger)
         {
             var username = configuration.GetValue<string>("Influx:Username");
             var password = configuration.GetValue<string>("Influx:Password");
@@ -22,6 +23,10 @@ namespace Isaac_DataService.Components.Connections
 
             _orgId = configuration.GetValue<string>("Influx:Organisation");
 
+            logger.LogWarning(username);
+            logger.LogWarning(password);
+            logger.LogWarning(url);
+            
             var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray())
                 .Org(_orgId)
                 .Url(url).Build();
@@ -34,6 +39,7 @@ namespace Isaac_DataService.Components.Connections
         private async Task EnsureBucket(string name)
         {
             var api = Client?.GetBucketsApi();
+            
             if (api != null && await api.FindBucketByNameAsync(name) == null)
                 await api.CreateBucketAsync(name,
                     new BucketRetentionRules {EverySeconds = 30, Type = BucketRetentionRules.TypeEnum.Expire},
@@ -42,8 +48,7 @@ namespace Isaac_DataService.Components.Connections
 
         public async Task SetBucket(string name)
         {
-            BucketName = name;
-            await EnsureBucket(BucketName);
+            await EnsureBucket(name);
         }
 
         public void Dispose()

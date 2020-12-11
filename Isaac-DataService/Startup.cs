@@ -23,9 +23,12 @@ namespace Isaac_DataService
             services.AddSingleton<MqttConnection>();
             services.AddSingleton<IFluxConnection, FluxConnection>();
             services.AddSingleton<InfluxService>();
+            services.AddSingleton<DataService>();
             services.AddSingleton<DataOutputService>();
             services.AddSingleton<IHostedService, DataOutputService>(
                 serviceProvider => serviceProvider.GetService<DataOutputService>());
+            services.AddSingleton<IHostedService, DataService>(
+                serviceProvider => serviceProvider.GetService<DataService>());
 
             
             services.AddLogging();

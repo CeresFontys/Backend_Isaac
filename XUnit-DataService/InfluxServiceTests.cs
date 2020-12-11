@@ -38,85 +38,106 @@ namespace XUnit_DataService
         [Fact]
         public async Task UploadPointSuccessful()
         {
+            //Setup valid connection
             Setup(true);
             var service = new InfluxService(_influxConnection.Object, _loggerMock.Object);
 
-            //Act
+            //Upload valid point
             var result = await service.UploadPoint(_point);
             
+            //Verify checked connection
             _influxConnection.Verify(connection => connection.ReadyAsync(), Times.Once);
+            //Verify write requested point
             _influxConnection.Verify(connection => connection.WritePointAsync(_point), Times.Once);
+            //Verify success
             Assert.True(result); 
         }
         
         [Fact]
         public async Task UploadPointConnectionFailed()
         {
+            //Setup invalid connection
             Setup(false);
             var service = new InfluxService(_influxConnection.Object, _loggerMock.Object);
 
-            //Act
+            //Upload valid point
             var result = await service.UploadPoint(_point);
             
-            //Assert
+            //Verify checked connection
             _influxConnection.Verify(connection => connection.ReadyAsync(), Times.Once);
+            //Verify logged failure
             _loggerMock.Verify(logger => logger.Log(LogLevel.Warning, It.IsAny<EventId>(), It.IsAny<PointData>(),
                 It.IsAny<Exception>(), It.IsAny<Func<PointData, Exception, string>>()), Times.Once);
+            //Verify failure
             Assert.False(result); 
         }
         
         [Fact]
         public async Task UploadPointVerificationFailed()
         {
+            //Setup valid connection
             Setup(true);
             var service = new InfluxService(_influxConnection.Object, _loggerMock.Object);
             
-            //Act
+            //Upload invalid point
             var result = await service.UploadPoint(null);
             
-            //Assert
+            //Verify checked connection
             _influxConnection.Verify(connection => connection.ReadyAsync(), Times.Once);
+            //Verify logged failure
             _loggerMock.Verify(logger => logger.Log(LogLevel.Warning, It.IsAny<EventId>(), It.IsAny<PointData>(),
                 It.IsAny<Exception>(), It.IsAny<Func<PointData, Exception, string>>()), Times.Once);
+            //Verify failure
             Assert.False(result); 
         }
 
         [Fact]
         public async Task BackupQueueFill()
         {
+            //Setup invalid connection
             Setup(false);
             var service = new InfluxService(_influxConnection.Object, _loggerMock.Object);
 
             var pointData = PointData.Measurement("TEST");
             
-            //Act
+            //Upload valid point
             var result = await service.UploadPoint(pointData);
             
-            //Assert
+            //Verify checked connection
             _influxConnection.Verify(connection => connection.ReadyAsync(), Times.Once);
+            //Verify logged failure
             _loggerMock.Verify(logger => logger.Log(LogLevel.Warning, It.IsAny<EventId>(), It.IsAny<PointData>(),
                 It.IsAny<Exception>(), It.IsAny<Func<PointData, Exception, string>>()), Times.Once);
+            
+            //Verify failure
             Assert.False(result);
+            //Verify queue has been filled
             Assert.Contains(pointData, service.QueueData);
         }
         
         [Fact]
         public async Task BackupQueueEmpty()
         {
+            //Setup valid connection
             Setup(true);
             
             var pointData = PointData.Measurement("TEST");
             
             var service = new InfluxService(_influxConnection.Object, _loggerMock.Object, new []{pointData});
-
-            //Act
+            
+            //Upload valid point
             var result = await service.UploadPoint(_point);
             
-            //Assert
+            //Verify checked connection twice
             _influxConnection.Verify(connection => connection.ReadyAsync(), Times.Exactly(2));
+            //Verify write requested point
             _influxConnection.Verify(connection => connection.WritePointAsync(pointData), Times.Once);
+            //Verify write backlog point
             _influxConnection.Verify(connection => connection.WritePointAsync(_point), Times.Once);
+            
+            //Verify success
             Assert.True(result);
+            //Verify queue is empty
             Assert.Empty(service.QueueData);
         }
 

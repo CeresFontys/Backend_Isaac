@@ -49,8 +49,8 @@ namespace Isaac_DataService.Services
             while (_shouldContinue)
             {
                 var sw = Stopwatch.StartNew();
-                var sensorDataModel = await _inputService.GatherData();
-                await PublishData(sensorDataModel);
+                //var sensorDataModel = await _inputService.GatherData();
+                //await PublishData(sensorDataModel);
                 if (sw.Elapsed <= TimeSpan.FromSeconds(everySeconds))
                 {
                     Thread.Sleep(TimeSpan.FromSeconds(everySeconds) - sw.Elapsed);
