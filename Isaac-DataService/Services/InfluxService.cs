@@ -26,14 +26,7 @@ namespace Isaac_DataService.Services
             _connection = connection;
             _logger = logger;
             
-            if (data != null)
-            {
-                _queue = new ConcurrentQueue<PointData>(data);
-            }
-            else
-            {
-                _queue = new ConcurrentQueue<PointData>();
-            }
+            _queue = data != null ? new ConcurrentQueue<PointData>(data) : new ConcurrentQueue<PointData>();
         }
 
         public async Task Initialize(string bucketname)
@@ -50,8 +43,15 @@ namespace Isaac_DataService.Services
                 //Check if this is a queued object to prevent endlessly calling itself
                 if (data!=null && (isQueued || await SyncQueue()))
                 {
-                    await _connection.WritePointAsync(data);
-                    return true;
+                    try
+                    {
+                        await _connection.WritePointAsync(data);
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
                 }
 
                 HandleFailure("a verification error", data, status);
