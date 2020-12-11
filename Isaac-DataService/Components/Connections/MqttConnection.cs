@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MQTTnet;
@@ -26,7 +27,7 @@ namespace Isaac_DataService.Components.Connections
                     .WithClientId("NetCoreClient")
                     .WithTcpServer(address, port)
                     .WithCredentials(username, password)
-                    .WithTls().Build()).Build();
+                    .Build()).Build();
             Client = new MqttFactory().CreateManagedMqttClient();
         }
 

@@ -43,6 +43,7 @@ namespace Isaac_DataService.Services
         {
             await _influx.Initialize(_rawBucket);
             _inputClient.Client.UseApplicationMessageReceivedHandler(HandleMqttMessage);
+            await _inputClient.Client.SubscribeAsync("#");
             await _inputClient.StartListen();
         }
 
@@ -108,6 +109,7 @@ namespace Isaac_DataService.Services
                 case "temperature":
                     if (float.TryParse(payload, out var temperature))
                     {
+                        //await UploadData(new TemperatureData(temperature/10f, x, y, floor));
                         await UploadData(new TemperatureData(temperature, x, y, floor));
                         break;
                     }
@@ -116,6 +118,7 @@ namespace Isaac_DataService.Services
                 case "humidity":
                     if (float.TryParse(payload, out var humidity))
                     {
+                        //await UploadData(new HumidityData(humidity/10f, x, y, floor));
                         await UploadData(new HumidityData(humidity, x, y, floor));
                         break;
                     }
@@ -160,6 +163,7 @@ namespace Isaac_DataService.Services
         private PointData CreatePoint<TData>(TData data) where TData : SensorData
         {
             var pointBase = CreatePointBase(data.Floor, data.X, data.Y, data.Type.ToString());
+
             return data switch
             {
                 UptimeData uptime => pointBase.Field("value", uptime.Value),

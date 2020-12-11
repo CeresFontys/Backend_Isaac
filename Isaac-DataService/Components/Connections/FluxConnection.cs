@@ -10,10 +10,12 @@ namespace Isaac_DataService.Components.Connections
     public class FluxConnection : IFluxConnection
     {
         private readonly string _orgId;
+        private string _sourceBucket;
         public string BucketName { get; private set; }
 
         public FluxConnection(IConfiguration configuration, ILogger<FluxConnection> logger)
         {
+            _sourceBucket = configuration.GetValue<string>("Influx:BucketName");;
             var username = configuration.GetValue<string>("Influx:Username");
             var password = configuration.GetValue<string>("Influx:Password");
             var url = "http://" +
@@ -22,10 +24,6 @@ namespace Isaac_DataService.Components.Connections
                       configuration.GetValue<string>("Influx:Port");
 
             _orgId = configuration.GetValue<string>("Influx:Organisation");
-
-            logger.LogWarning(username);
-            logger.LogWarning(password);
-            logger.LogWarning(url);
             
             var options = InfluxDBClientOptions.Builder.CreateNew().Authenticate(username, password.ToCharArray())
                 .Org(_orgId)
@@ -42,7 +40,7 @@ namespace Isaac_DataService.Components.Connections
             
             if (api != null && await api.FindBucketByNameAsync(name) == null)
                 await api.CreateBucketAsync(name,
-                    new BucketRetentionRules {EverySeconds = 30, Type = BucketRetentionRules.TypeEnum.Expire},
+                    null,
                     _orgId);
         }
 
@@ -58,7 +56,7 @@ namespace Isaac_DataService.Components.Connections
 
         public async Task WritePointAsync(PointData data)
         {
-            await Client.GetWriteApiAsync().WritePointAsync(data);
+            await Client.GetWriteApiAsync().WritePointAsync(_sourceBucket,_orgId, data);
         }
 
         public async Task<Ready> ReadyAsync()
