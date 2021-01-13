@@ -42,5 +42,5 @@ steps:
 - task: Docker@2 
   inputs:
     repository: 'Isaac-AuthorizationService' 
-    command: build
+    command: buildAndPush
     Dockerfile: /Dockerfile
