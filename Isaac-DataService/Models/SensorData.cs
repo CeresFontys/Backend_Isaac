@@ -13,18 +13,16 @@ namespace Isaac_DataService.Services
 
         protected SensorData(string x, string y, string floor, SensorType type, DateTime time = default)
         {
-            if (time == default)
-            {
-                Time = DateTime.UtcNow;
-            }
-            else
-            {
-                Time = time;
-            }
+            Time = time == default ? DateTime.UtcNow : time;
             X = x;
             Y = y;
             Floor = floor;
             Type = type;
+        }
+
+        public SensorData()
+        {
+            
         }
     }
 

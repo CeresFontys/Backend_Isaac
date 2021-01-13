@@ -5,6 +5,10 @@ namespace Isaac_DataService.Controllers
 {
     public class FullSensorData : ISensorData
     {
+        public FullSensorData()
+        {
+            
+        }
         public float Temperature { get; set; }
         public float Humidity { get; set; }
         

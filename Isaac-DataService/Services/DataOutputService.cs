@@ -24,17 +24,15 @@ namespace Isaac_DataService.Services
             _outputConnection = outputConnection;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             _thread = new Thread(Start);
             _thread.Start();
-            return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
             _shouldContinue = false;
-            return Task.CompletedTask;
         }
 
         private async void Start()
@@ -60,11 +58,11 @@ namespace Isaac_DataService.Services
 
         private async Task PublishData(SensorDataModel model)
         {
-            foreach (var data in model.Sensors.OfType<TemperatureData>())
+            foreach (var data in model.Sensors.OfType<HumidityData>())
                 await PublishData(data.Floor, data.X, data.Y, data.Type.ToString().ToLowerInvariant(),
                     data.Value.ToString());
-
-            foreach (var data in model.Sensors.OfType<HumidityData>())
+            
+            foreach (var data in model.Sensors.OfType<TemperatureData>())
                 await PublishData(data.Floor, data.X, data.Y, data.Type.ToString().ToLowerInvariant(),
                     data.Value.ToString());
         }

@@ -10,6 +10,11 @@ namespace Isaac_DataService.Services
             Value = value;
         }
 
+        public UptimeData()
+        {
+            
+        }
+
         [Column("value")] public long Value { get; set; }
     }
 }
