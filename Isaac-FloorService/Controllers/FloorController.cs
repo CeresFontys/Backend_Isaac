@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Isaac_FloorService;
 using Isaac_FloorService.Data;
 using Isaac_FloorService.Models;
 
@@ -34,7 +32,7 @@ namespace Isaac_FloorService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Floor>> GetFloor(int id)
         {
-            var floor = await _context.Floor.FindAsync(id);
+            var floor = await _context.FindAsync<Floor>(id);
 
             if (floor == null)
             {
@@ -96,29 +94,32 @@ namespace Isaac_FloorService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Floor>> PostFloor([FromForm] FloorRequest floorRequest)
+        public async Task<ActionResult> PostFloor([FromRoute] string name)
         {
-            await using var stream = Request.Form.Files.First().OpenReadStream();
-            await using var memoryStream = new MemoryStream();
-            await stream.CopyToAsync(memoryStream);
-            floorRequest.Floor.Image = memoryStream.ToArray();
-            _context.Floor.Add(floorRequest.Floor);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetFloor", new { id = floorRequest.Floor.Id }, floorRequest.Floor);
+            if (!FloorExistsByBaseName(name))
+            {
+                Floor floor = new Floor
+                {
+                    BaseName = name,
+                    Name = "Floor" + name
+                };
+                _context.Floor.Add(floor);
+                await _context.SaveChangesAsync();
+            }
+            return Ok();
         }
 
         // DELETE: api/Floor/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Floor>> DeleteFloor(int id)
         {
-            var floor = await _context.Floor.FindAsync(id);
+            var floor = await _context.FindAsync<Floor>(id);
             if (floor == null)
             {
                 return NotFound();
             }
 
-            _context.Floor.Remove(floor);
+            _context.Remove(floor);
             await _context.SaveChangesAsync();
 
             return floor;
@@ -127,6 +128,11 @@ namespace Isaac_FloorService.Controllers
         private bool FloorExists(int id)
         {
             return _context.Floor.Any(e => e.Id == id);
+        }
+
+        private bool FloorExistsByBaseName(string name)
+        {
+            return _context.Floor.Any(e => e.BaseName == name);
         }
     }
 }

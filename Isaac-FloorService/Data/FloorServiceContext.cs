@@ -9,6 +9,10 @@ namespace Isaac_FloorService.Data
 {
     public class FloorServiceContext : DbContext
     {
+        public FloorServiceContext()
+        {
+            
+        }
         public FloorServiceContext (DbContextOptions<FloorServiceContext> options)
             : base(options)
         {
