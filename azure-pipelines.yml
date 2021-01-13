@@ -37,7 +37,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'dockerhub'
+    containerRegistry: 'emirhanDocker'
     command: 'login'
 - task: Docker@2 
   inputs:
