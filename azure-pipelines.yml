@@ -43,4 +43,4 @@ steps:
   inputs:
     repository: 'Isaac-AuthorizationService' 
     command: buildAndPush
-    Dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+    Dockerfile: "$(solution)/Isaac-AuthorizationService/Dockerfile"
