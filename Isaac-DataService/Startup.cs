@@ -27,7 +27,10 @@ namespace Isaac_DataService
             services.AddSingleton<IHostedService, DataOutputService>(
                 serviceProvider => serviceProvider.GetService<DataOutputService>());
 
-            
+            services.AddSingleton<DataService>();
+            services.AddSingleton<IHostedService, DataService>(
+                serviceProvider => serviceProvider.GetService<DataService>());
+
             services.AddLogging();
             services.AddControllers();
         }
