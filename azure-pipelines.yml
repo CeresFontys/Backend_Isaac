@@ -36,9 +36,10 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- task: Docker@2
-  displayName: Build an image
-  inputs:
-    repository: $(authorService)
-    command: build
-    Dockerfile: app/Dockerfile
+
+# - task: Docker@2
+#   displayName: Build an image
+#   inputs:
+#     repository: $(authorService)
+#     command: build
+#     Dockerfile: app/Dockerfile
