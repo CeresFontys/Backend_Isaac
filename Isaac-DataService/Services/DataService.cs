@@ -69,10 +69,17 @@ namespace Isaac_DataService.Services
                 @"group(columns: [""x"",""y"",""floor""], mode: ""by"") |>" +
                 @"last()"
                 , CancellationToken.None);
+            
+            await foreach (var data in temperature)
+            {
+                await _model.UpdateSensor(data);
+            }
 
-            await foreach (var data in temperature) await _model.UpdateSensor(data);
 
-            await foreach (var data in humidity) await _model.UpdateSensor(data);
+            await foreach (var data in humidity)
+            {
+                await _model.UpdateSensor(data);
+            }
 
             return _model;
         }

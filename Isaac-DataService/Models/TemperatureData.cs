@@ -12,7 +12,7 @@ namespace Isaac_DataService.Services
 
         public TemperatureData()
         {
-            
+            Type = SensorType.Temperature;
         }
 
         [Column("value")] public float Value { get; set; }

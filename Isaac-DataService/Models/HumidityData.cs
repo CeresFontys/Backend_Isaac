@@ -12,7 +12,7 @@ namespace Isaac_DataService.Services
 
         public HumidityData()
         {
-            
+            Type = SensorType.Humidity;
         }
 
         [Column("value")] public float Value { get; set; }

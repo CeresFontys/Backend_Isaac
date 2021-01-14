@@ -4,7 +4,7 @@ WORKDIR /source
 
 COPY . ./
 # copy everything else and build app
-RUN dotnet publish -c release -o /service -r linux-musl-x64 --self-contained true
+RUN dotnet publish -c development -o /service -r linux-musl-x64 --self-contained true
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-alpine

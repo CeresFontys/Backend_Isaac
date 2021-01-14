@@ -10,17 +10,13 @@ namespace Isaac_DataService.Services
 
         public async Task UpdateSensor(SensorData data)
         {
-            var oldData = Sensors.FirstOrDefault(sensorData =>
-                sensorData.Floor == data.Floor && sensorData.X == data.X && sensorData.Y == data.Y &&
-                sensorData.Type == data.Type);
-
-            //Determine if upgrade of data is needed
-            if (oldData != null && oldData.Time < data.Time)
+            var old = Sensors.FirstOrDefault(sensorData => sensorData.Floor == data.Floor && sensorData.X == data.X && sensorData.Y == data.Y && sensorData.Type == data.Type);
+            if (old != null && old.Time < data.Time)
             {
-                Sensors.Remove(oldData);
+                Sensors.Remove(old);
                 Sensors.Add(data);
             }
-            else if (oldData == null)
+            else if (old == null)
             {
                 Sensors.Add(data);
             }
