@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Isaac_DataService.Components.Connections;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MQTTnet;
 
 namespace Isaac_DataService.Services
@@ -15,26 +16,26 @@ namespace Isaac_DataService.Services
     {
         private readonly DataService _inputService;
         private readonly MqttConnection _outputConnection;
+        private readonly ILogger<DataOutputService> _logger;
         private bool _shouldContinue;
         private Thread _thread;
 
-        public DataOutputService(DataService dataService, MqttConnection outputConnection, IConfiguration config)
+        public DataOutputService(DataService dataService, MqttConnection outputConnection, ILogger<DataOutputService> logger)
         {
             _inputService = dataService;
             _outputConnection = outputConnection;
+            _logger = logger;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             _thread = new Thread(Start);
             _thread.Start();
-            return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
             _shouldContinue = false;
-            return Task.CompletedTask;
         }
 
         private async void Start()
@@ -45,11 +46,13 @@ namespace Isaac_DataService.Services
         private async Task Loop(int everySeconds = 30)
         {
             _shouldContinue = true;
+
+            SensorDataModel sensorDataModel = new SensorDataModel();
             
             while (_shouldContinue)
             {
                 var sw = Stopwatch.StartNew();
-                var sensorDataModel = await _inputService.GatherData();
+                sensorDataModel = await _inputService.GatherData();
                 await PublishData(sensorDataModel);
                 if (sw.Elapsed <= TimeSpan.FromSeconds(everySeconds))
                 {
@@ -60,13 +63,17 @@ namespace Isaac_DataService.Services
 
         private async Task PublishData(SensorDataModel model)
         {
-            foreach (var data in model.Sensors.OfType<TemperatureData>())
-                await PublishData(data.Floor, data.X, data.Y, data.Type.ToString().ToLowerInvariant(),
-                    data.Value.ToString());
-
             foreach (var data in model.Sensors.OfType<HumidityData>())
+            {
                 await PublishData(data.Floor, data.X, data.Y, data.Type.ToString().ToLowerInvariant(),
                     data.Value.ToString());
+            }
+
+            foreach (var data in model.Sensors.OfType<TemperatureData>())
+            {
+                await PublishData(data.Floor, data.X, data.Y, data.Type.ToString().ToLowerInvariant(),
+                    data.Value.ToString());
+            }
         }
 
         private async Task PublishData(string floor, string x, string y, string type, string data)

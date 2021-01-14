@@ -57,22 +57,29 @@ namespace Isaac_DataService.Services
             var temperature = _queryApi.QueryAsyncEnumerable<TemperatureData>(
                 $@"from(bucket:""{_sourceBucket}"") |> " +
                 @"range(start: -2h) |> " +
-                @"filter(fn: (r) => r._measurement == ""sensortemperature"" )|> " +
+                @"filter(fn: (r) => r._measurement == ""sensorTemperature"" )|> " +
                 @"group(columns: [""x"",""y"",""floor""], mode: ""by"") |>" +
                 @"last()"
                 , CancellationToken.None);
             
             var humidity = _queryApi.QueryAsyncEnumerable<HumidityData>(
-                $"from(bucket:\"{_sourceBucket}\") |> " +
+                $@"from(bucket:""{_sourceBucket}"") |> " +
                 @"range(start: -2h) |> " +
-                @"filter(fn: (r) => r._measurement == ""sensorhumidity"" )|> " + 
+                @"filter(fn: (r) => r._measurement == ""sensorHumidity"" )|> " + 
                 @"group(columns: [""x"",""y"",""floor""], mode: ""by"") |>" +
                 @"last()"
                 , CancellationToken.None);
+            
+            await foreach (var data in temperature)
+            {
+                await _model.UpdateSensor(data);
+            }
 
-            await foreach (var data in temperature) await _model.UpdateSensor(data);
 
-            await foreach (var data in humidity) await _model.UpdateSensor(data);
+            await foreach (var data in humidity)
+            {
+                await _model.UpdateSensor(data);
+            }
 
             return _model;
         }
