@@ -71,9 +71,22 @@ namespace Isaac_AuthorizationService.Services
             return jwtUser;
         }
 
-        public string Test()
+        //Service to delete a user
+        public void Delete(int selectedId, int id)
         {
-            return "ewa";
+            if (selectedId != 0 && id != 0)
+            {
+                var user = _dbContext.Users.Find(id);
+                if (user != null && user.IsAdmin == 1)
+                {
+                    var userToBeDeleted = _dbContext.Users.Find(selectedId);
+                    if (userToBeDeleted != null)
+                    {
+                        _dbContext.Users.Remove(userToBeDeleted);
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
         }
     }
 }

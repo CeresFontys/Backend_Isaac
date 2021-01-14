@@ -54,19 +54,12 @@ namespace Isaac_AuthorizationService.Controllers
             return BadRequest();
         }
 
-        [HttpGet("Test")]
-        public IActionResult Test()
+        [HttpPost("{id}/delete")]
+        //Delete user
+        public IActionResult Delete([FromBody] int selectedId, int id)
         {
-            try
-            {
-                _userService.Test();
-                return Ok("noice");
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-
+            _userService.Delete(selectedId, id);
+            return Ok();
         }
     }
 }
