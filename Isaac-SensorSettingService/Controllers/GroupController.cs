@@ -20,21 +20,19 @@ namespace Isaac_SensorSettingService.Controllers
         }
 
         [HttpGet]
-        [Route("groups/{floor}")]
+        [Route("/{floor}")]
         public List<SensorGroupModel> GetGroupsByFloor(string floor)
         {
             return _groupService.GetGroupsByFloor(floor);
         }
         [HttpGet]
-        [Route("groups")]
         public List<SensorGroupModel> GetAllGroups()
         {
             return _groupService.GetGroups();
         }
 
         [HttpPost]
-        [Route("add")]
-        public string AddSensor([FromBody] SensorGroupModel group)
+        public SensorGroupModel AddGroup([FromBody] SensorGroupModel group)
         {
             return _groupService.AddGroup(group);
         }

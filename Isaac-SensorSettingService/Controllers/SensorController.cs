@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Isaac_SensorSettingService.Compontents;
 using Isaac_SensorSettingService.Models;
 using Microsoft.AspNetCore.Http;
@@ -19,31 +20,45 @@ namespace Isaac_SensorSettingService.Controllers
             _sensorService = sensorService;
         }
 
+
         [HttpGet]
-        [Route("sensors/{floor}")]
+        [Route("/{floor}")]
         public List<SensorModel> GetSensorsByFloor(string floor)
         {
             return _sensorService.GetSensorsByFloor(floor);
         }
         [HttpGet]
-        [Route("sensors")]
         public List<SensorModel> GetAllSensors()
         {
             return _sensorService.GetSensors();
         }
 
         [HttpPost]
-        [Route("add")]
         public string AddSensor([FromBody] SensorModel sensor)
         {
             return _sensorService.AddSensor(sensor);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateSensor([FromBody] SensorModel sensor)
+        {
+            return Ok(await _sensorService.UpdateSensor(sensor));
+        }
+
 
         [HttpGet]
         [Route("test")]
         public string Test()
         {
             return "test";
+        }
+    }
+
+    public class SensorProfile : Profile
+    {
+        public SensorProfile()
+        {
+            CreateMap<SensorModel, SensorModel>();
         }
     }
 }

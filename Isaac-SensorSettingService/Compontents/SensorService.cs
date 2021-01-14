@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Isaac_SensorSettingService.Controllers;
 using Isaac_SensorSettingService.Data;
 using Isaac_SensorSettingService.Models;
 
@@ -10,11 +12,16 @@ namespace Isaac_SensorSettingService.Compontents
     public class SensorService
     {
         private readonly DataContext _dbContext;
+        private readonly IMapper _mapper;
         public SensorService(DataContext dbContext)
         {
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.AddProfile<SensorProfile>();
+            });
+            _mapper = configuration.CreateMapper();
+            
             _dbContext = dbContext;
         }
-
         public string AddSensor(SensorModel sensor)
         {
             try
@@ -29,10 +36,27 @@ namespace Isaac_SensorSettingService.Compontents
             }
         }
 
-        public void UpdateSensor(SensorModel sensor)
+        public async Task<bool> UpdateSensor(SensorModel sensor)
         {
-            _dbContext.Sensors.Update(sensor);
+          var foundSensor = await _dbContext.FindAsync<SensorModel>(sensor.Id); 
+          _mapper.Map(sensor, foundSensor);
+          
+          await _dbContext.SaveChangesAsync();
+          return true;
         }
+
+        public async Task<bool> DeleteSensor(int id)
+        {
+            var foundSensor = await _dbContext.FindAsync<SensorModel>(id);
+            if (foundSensor != null)
+            {
+                _dbContext.Remove(foundSensor);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
 
         public SensorModel GetSensor(string floor, int x, int y)
         { 
