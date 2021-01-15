@@ -8,6 +8,7 @@ using Isaac_AuthorizationService.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -41,6 +42,7 @@ namespace Isaac_AuthorizationService
           
             services.AddDbContext<ApplicationDbContext>(o => o.UseMySql(connectionString));
             services.AddScoped<IUserService, AuthService>();
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //services.AddDbContext<ApplicationDbContext>(options =>
             //        options.UseMySql(Configuration.GetConnectionString("MySQL:ConnectionString")));
@@ -57,7 +59,7 @@ namespace Isaac_AuthorizationService
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseMiddleware<IpSafeListMiddleware>(Configuration["IpSafeList"]);
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

@@ -10,6 +10,6 @@ namespace Isaac_AuthorizationService.Interfaces
     {
         void Create(User user);
         JwtUser Authenticate(string username, string password);
-        string Test();
+        void Delete(int selectedId, int id);
     }
 }
