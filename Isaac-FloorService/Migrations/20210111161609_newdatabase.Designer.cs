@@ -3,14 +3,16 @@ using System;
 using Isaac_FloorService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Isaac_FloorService.Migrations
 {
     [DbContext(typeof(FloorServiceContext))]
-    partial class FloorServiceContextModelSnapshot : ModelSnapshot
+    [Migration("20210111161609_newdatabase")]
+    partial class newdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,9 +24,6 @@ namespace Isaac_FloorService.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<string>("BaseName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("longblob");

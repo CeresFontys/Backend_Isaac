@@ -22,6 +22,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-DataService", "XUnit-DataService\XUnit-DataService.csproj", "{C5BAFCBA-0A98-4C88-AE6E-CD4A3C0DAF46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-FloorService", "XUnit-FloorService\XUnit-FloorService.csproj", "{4184F4FA-E969-4BD1-881C-6526138A87DF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9AF6A218-8F78-4331-B0C3-C6DECA8F736B} = {9AF6A218-8F78-4331-B0C3-C6DECA8F736B}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit-SensorSettingService", "XUnit-SensorSettingService\XUnit-SensorSettingService.csproj", "{B2479639-E0B0-47CD-A310-04CF7AF30562}"
 EndProject
