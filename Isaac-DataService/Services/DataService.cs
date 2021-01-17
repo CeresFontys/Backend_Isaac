@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using InfluxDB.Client;
 using InfluxDB.Client.Writes;
 using Isaac_DataService.Components.Connections;
+using Isaac_DataService.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using MQTTnet;
 using MQTTnet.Extensions.ManagedClient;
 
@@ -43,7 +46,6 @@ namespace Isaac_DataService.Services
         {
             await _influx.Initialize(_rawBucket);
             _inputClient.Client.UseApplicationMessageReceivedHandler(HandleMqttMessage);
-            await _inputClient.Client.SubscribeAsync("#");
             await _inputClient.StartListen();
         }
 
@@ -82,6 +84,56 @@ namespace Isaac_DataService.Services
             }
 
             return _model;
+        }
+
+        public async Task<IEnumerable<SensorDTO>> GatherData(long time, string floor, TimeSpan timespan)
+        {
+            var start = time - timespan.Ticks/2;
+            var end = time + timespan.Ticks/2;
+            
+            
+            var temperature = _queryApi.QueryAsyncEnumerable<TemperatureData>(
+                $@"from(bucket:""{_sourceBucket}"") |> " +
+                $@"range(start: {start}, stop: {end}) |> " +
+                $@"filter(fn: (r) => r._measurement == ""sensorTemperature"" and r.floor == ""{floor}"" )|> " +
+                @"group(columns: [""x"",""y""], mode: ""by"") |>" +
+                @"mean()"
+                , CancellationToken.None);
+            
+            var humidity = _queryApi.QueryAsyncEnumerable<HumidityData>(
+                $@"from(bucket:""{_sourceBucket}"") |> " +
+                $@"range(start: {start}, stop: {end}) |> " +
+                $@"filter(fn: (r) => r._measurement == ""sensorHumidity"" and r.floor == ""{floor}"" )|> " + 
+                @"group(columns: [""x"",""y""], mode: ""by"") |>" +
+                @"mean()"
+                , CancellationToken.None);
+
+            var temperatureData = new List<TemperatureData>();
+
+            await foreach (var data in temperature)
+            {
+                temperatureData.Add(data);
+            }
+            
+            var humidityData = new List<HumidityData>();
+            
+            await foreach (var data in humidity)
+            {
+                humidityData.Add(data);
+            }
+            
+            temperatureData.Sort();
+            humidityData.Sort();
+
+            return temperatureData.Zip(humidityData).Select(data => 
+                    new SensorDTO() 
+                    {
+                        X = int.Parse(data.First.X),
+                        Y = int.Parse(data.First.Y),
+                        Humidity = data.Second.Value,
+                        Temperature = data.First.Value
+                    }
+                );
         }
         
         private async Task HandleMqttMessage(MqttApplicationMessageReceivedEventArgs arg)
@@ -195,5 +247,13 @@ namespace Isaac_DataService.Services
         {
             _influx?.Dispose();
         }
+    }
+
+    public class SensorDTO
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public float Temperature { get; set; }
+        public float Humidity { get; set; }
     }
 }

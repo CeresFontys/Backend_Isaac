@@ -36,7 +36,7 @@ namespace Isaac_AuthorizationService.Services
 
         public JwtUser Authenticate(string email, string password)
         {
-            //to change
+           //to change 
             var jwtKey = "TryToGuessThisPassword";
             var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
             //bool verified = BC.Verify(password, user.Password);
