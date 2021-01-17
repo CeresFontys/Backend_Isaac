@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Isaac_AuthorizationService.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -22,7 +21,6 @@ namespace Isaac_AuthorizationService.Controllers
             _userService = userService;
         }
 
-        [AllowAnonymous]
         [HttpPost("Register")]
         public IActionResult Register(User user)
         {
@@ -37,7 +35,6 @@ namespace Isaac_AuthorizationService.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login(User user)
         {
@@ -53,12 +50,26 @@ namespace Isaac_AuthorizationService.Controllers
             }
             return BadRequest();
         }
+        
+        [HttpGet("")]
+        public IActionResult GetUsers()
+        {
+            return Ok(_userService.GetUsers());
+        }
 
         [HttpPost("{id}/delete")]
         //Delete user
-        public IActionResult Delete([FromBody] int selectedId, int id)
+        public IActionResult Delete([FromRoute]int id)
         {
-            _userService.Delete(selectedId, id);
+            _userService.Delete(id);
+            return Ok();
+        }
+        
+        [HttpPost("{id}/update")]
+        //Delete user
+        public IActionResult Update([FromRoute]int id, [FromBody] User user)
+        {
+            _userService.Update(user);
             return Ok();
         }
     }
