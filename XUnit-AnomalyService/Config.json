@@ -1,0 +1,30 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "AlgoConfig": {
+    "MaxDifferenceTemp": 1,
+    "MaxDifferenceHum": 1,
+    "ParameterExtremeTopTemp": 35,
+    "ParameterExtremeBottomTemp": 15,
+    "ParameterExtremeTopHum": 90,
+    "ParameterExtremeBottomHum": 10,
+    "ParameterTopTemp": 28,
+    "ParameterBottomTemp": 18,
+    "ParameterTopHum": 60,
+    "ParameterBottomHum": 30
+  },
+  "WeatherApiConfig": {
+    "ApiKey": "743a1ffe5ee0fc1b70c40d06e72126a6",
+    "CityId": "Eindhoven"
+  },
+  "LoopParameters": {
+    "ServiceLoopMinutes": 5,
+    "FluxLoopMinutes": 6
+  }
+}

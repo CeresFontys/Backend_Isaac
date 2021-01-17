@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace Isaac_AnomalyService.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AnomalyController : ControllerBase
@@ -22,13 +23,15 @@ namespace Isaac_AnomalyService.Controllers
         private AnomalyService _anomalyService;
         private FluxConnection _fluxConnection;
         private WeatherApiConnection _weatherApi;
+        private SqlConnection sqlConnection;
 
 
-        public AnomalyController( AnomalyService anomalyService, FluxConnection fluxConnection, WeatherApiConnection weatherApi)
+        public AnomalyController( AnomalyService anomalyService, FluxConnection fluxConnection, WeatherApiConnection weatherApi, SqlConnection sqlConnection)
         {
             _anomalyService = anomalyService;
             _fluxConnection = fluxConnection;
             _weatherApi = weatherApi;
+            this.sqlConnection = sqlConnection;
         }
 
         // GET: api/<AnomalyController>
@@ -45,13 +48,25 @@ namespace Isaac_AnomalyService.Controllers
             return "value";
         }
 
-        [HttpGet("ReadIncomingSensors")]
-        public async IAsyncEnumerable<string> GetList(int id)
+        [HttpGet("sensors")]
+        public async IAsyncEnumerable<string> GetList()
         {
             await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())
             {
                 yield return JsonConvert.SerializeObject(sensorData);
             }
+        }
+
+        [HttpDelete("{id}")]
+        public void DeleteError(string id)
+        {
+            sqlConnection.DeleteError(id);
+        }
+
+        [HttpGet("errors")]
+        public List<SensorError> GetErrorList()
+        {
+            return sqlConnection.GetAllErrors();
         }
 
         //[HttpGet("testweather")]
@@ -73,10 +88,5 @@ namespace Isaac_AnomalyService.Controllers
         {
         }
 
-        // DELETE api/<AnomalyController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -14,6 +14,20 @@ namespace Isaac_AnomalyService.Data
         {
         }
 
+
         public DbSet<SensorError> Errors { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SensorError>().HasKey((key) => new
+            {
+                key.X,
+                key.Y,
+                key.Floor,
+                key.ValueType
+            });
+        }
     }
+
 }

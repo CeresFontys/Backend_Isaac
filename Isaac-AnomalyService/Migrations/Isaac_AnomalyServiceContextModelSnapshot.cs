@@ -14,14 +14,25 @@ namespace Isaac_AnomalyService.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Isaac_AnomalyService.Models.SensorError", b =>
                 {
-                    b.Property<long>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                    b.Property<int>("X")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Y")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Floor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ValueType")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<double>("ApiValue")
+                        .HasColumnType("double");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime(6)");
@@ -32,9 +43,6 @@ namespace Isaac_AnomalyService.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("Floor")
-                        .HasColumnType("int");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -44,13 +52,10 @@ namespace Isaac_AnomalyService.Migrations
                     b.Property<double>("ValueSecond")
                         .HasColumnType("double");
 
-                    b.Property<int>("X")
-                        .HasColumnType("int");
+                    b.Property<string>("id")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
+                    b.HasKey("X", "Y", "Floor", "ValueType");
 
                     b.ToTable("Errors");
                 });
