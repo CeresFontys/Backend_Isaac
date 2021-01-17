@@ -82,14 +82,14 @@ namespace Isaac_AnomalyService.Components.Services
                 _logger.LogWarning("Loop werkt.");
                 var sw = Stopwatch.StartNew();
                 _outlierLeaves.ClearSensorList();
-                foreach (SensorData sensorData in Mockdata)
-                {
-                    _outlierLeaves.FillSensorList(sensorData);
-                }
-                //await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())
+                //foreach (SensorData sensorData in Mockdata)
                 //{
                 //    _outlierLeaves.FillSensorList(sensorData);
                 //}
+                await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())
+                {
+                    _outlierLeaves.FillSensorList(sensorData);
+                }
 
 
                 list?.Clear();
