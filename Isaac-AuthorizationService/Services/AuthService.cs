@@ -36,7 +36,7 @@ namespace Isaac_AuthorizationService.Services
 
         public JwtUser Authenticate(string email, string password)
         {
-            //to change
+           //to change 
             var jwtKey = "TryToGuessThisPassword";
             var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
             //bool verified = BC.Verify(password, user.Password);
@@ -72,21 +72,24 @@ namespace Isaac_AuthorizationService.Services
         }
 
         //Service to delete a user
-        public void Delete(int selectedId, int id)
+        public void Delete(int id)
         {
-            if (selectedId != 0 && id != 0)
-            {
-                var user = _dbContext.Users.Find(id);
-                if (user != null && user.IsAdmin == 1)
-                {
-                    var userToBeDeleted = _dbContext.Users.Find(selectedId);
-                    if (userToBeDeleted != null)
-                    {
-                        _dbContext.Users.Remove(userToBeDeleted);
-                        _dbContext.SaveChanges();
-                    }
-                }
-            }
+            var userToBeDeleted = _dbContext.Users.Find(id);
+            if (userToBeDeleted == null) return;
+            
+            _dbContext.Users.Remove(userToBeDeleted);
+            _dbContext.SaveChanges();
+        }
+
+        public IEnumerable<User> GetUsers()
+        {
+            return _dbContext.Users.AsEnumerable();
+        }
+
+        public void Update(User user)
+        {
+            _dbContext.Update(user);
+            _dbContext.SaveChanges();
         }
     }
 }

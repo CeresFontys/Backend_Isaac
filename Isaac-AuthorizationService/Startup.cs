@@ -42,6 +42,7 @@ namespace Isaac_AuthorizationService
           
             services.AddDbContext<ApplicationDbContext>(o => o.UseMySql(connectionString));
             services.AddScoped<IUserService, AuthService>();
+            services.AddScoped<IWhitelistService, WhitelistService>();
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,13 +57,13 @@ namespace Isaac_AuthorizationService
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
 
+            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseRouting();
-            app.UseMiddleware<IpSafeListMiddleware>(Configuration["IpSafeList"]);
+            //app.UseMiddleware<IpSafeListMiddleware>(Configuration["IpSafeList"]);
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

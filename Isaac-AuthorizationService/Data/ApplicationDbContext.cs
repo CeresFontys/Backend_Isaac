@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Isaac_AuthorizationService.Interfaces;
 
 namespace Isaac_AuthorizationService.Data
 {
@@ -14,9 +15,10 @@ namespace Isaac_AuthorizationService.Data
         }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                 : base(options)
-        { 
+        {
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Whitelist> Whitelists { get; set; }
     }
 }

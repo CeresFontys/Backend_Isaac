@@ -35,8 +35,11 @@ namespace Isaac_DataService.Components.Connections
 
         public async Task StartListen()
         {
-            await Client.SubscribeAsync(new MqttTopicFilterBuilder().WithExactlyOnceQoS().WithTopic("#").Build());
-            await Client.StartAsync(options);
+            if (!Client.IsStarted)
+            {
+                await Client.SubscribeAsync(new MqttTopicFilterBuilder().WithExactlyOnceQoS().WithTopic("#").Build());
+                await Client.StartAsync(options);
+            }
         }
         
         public async Task StopListen()
