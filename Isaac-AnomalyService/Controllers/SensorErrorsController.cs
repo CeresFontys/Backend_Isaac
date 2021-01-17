@@ -45,47 +45,8 @@ namespace Isaac_AnomalyService.Controllers
         // PUT: api/SensorErrors/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutSensorError(long id, SensorError sensorError)
-        {
-            if (id != sensorError.id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(sensorError).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SensorErrorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/SensorErrors
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<SensorError>> PostSensorError(SensorError sensorError)
-        {
-            _context.Errors.Add(sensorError);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSensorError", new { id = sensorError.id }, sensorError);
-        }
-
+       
+       
         // DELETE: api/SensorErrors/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<SensorError>> DeleteSensorError(long id)
@@ -102,9 +63,6 @@ namespace Isaac_AnomalyService.Controllers
             return sensorError;
         }
 
-        private bool SensorErrorExists(long id)
-        {
-            return _context.Errors.Any(e => e.id == id);
-        }
+       
     }
 }

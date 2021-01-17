@@ -8,10 +8,16 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Isaac_AnomalyService.Controllers
 {
+
+    public class UserHandler
+    {
+        public static HashSet<String> connectedClients = new HashSet<string>();
+    }
+
     public class ErrorHub : Hub
     {
 
-        public async Task SendError(List<SensorError> list)
+        public void SendError(List<SensorError> list)
         {
             //var list = new List<SensorError>();
 
@@ -19,7 +25,27 @@ namespace Isaac_AnomalyService.Controllers
             //{
             //    list.Add(error);
             //}
-            await (Clients?.All?.SendAsync("ReceiveErrors", list)??Task.CompletedTask);
+            foreach (var CID in UserHandler.connectedClients)
+            {
+               Clients.Client(CID).SendAsync("ReceiveErrors", "list");
+            }
+
         }
+
+        public override Task OnConnectedAsync()
+        {
+            UserHandler.connectedClients.Add(Context.ConnectionId);
+            Clients.All.SendAsync("Connected", "User Connected");
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            UserHandler.connectedClients.Remove(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
+        }
+
+
+        
     }
 }

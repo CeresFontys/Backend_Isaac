@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Isaac_AnomalyService.Data;
+using Isaac_AnomalyService.Models;
 
 namespace Isaac_AnomalyService
 {
@@ -42,21 +43,14 @@ namespace Isaac_AnomalyService
             services.AddLogging();
             services.AddHttpClient();
             services.AddTransient<ErrorHub>();
+            services.AddTransient<WeatherApiWield>();
             services.AddTransient<WeatherApiConnection>();
-            services.AddHostedService<AnomalyService>();
+            services.AddSingleton<AnomalyService>();
+            services.AddSingleton<SqlConnection>();
+            services.AddSingleton<IHostedService, AnomalyService>(
+            serviceProvider => serviceProvider.GetService<AnomalyService>());
             services.AddSignalR();
-            services.AddCors(options => options.AddPolicy(name: "MyAllowSpecificOrigins",
-                builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000");
-                    builder.AllowCredentials();
-                    builder.AllowAnyHeader();
-                    builder.AllowAnyMethod();
-                }));
-
-
-
-
+            services.AddCors();
             services.AddControllers();
             
         }
@@ -68,7 +62,13 @@ namespace Isaac_AnomalyService
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
+
             app.UseRouting();
 
             app.UseAuthorization();

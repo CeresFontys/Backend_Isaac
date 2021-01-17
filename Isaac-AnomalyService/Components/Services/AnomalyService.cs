@@ -9,6 +9,8 @@ using Isaac_AnomalyService.Controllers;
 using Isaac_AnomalyService.Data;
 using Isaac_AnomalyService.Models;
 using Isaac_AnomalyService.Service;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,82 +27,82 @@ namespace Isaac_AnomalyService.Components.Services
         private FluxConnection _fluxConnection;
         private WeatherApiConnection _weatherApiConnection;
         private OutlierLeaves _outlierLeaves;
+        private SqlConnection _sqlConnection;
 
         private int _serviceloopMinutes;
         private bool shouldContinue;
         private Thread thread;
         private readonly ILogger<AnomalyService> _logger;
         private IServiceScopeFactory _scopeFactory;
-        private ErrorHub _errorHub;
+        private IHubContext<ErrorHub> _errorHub;
+
+        private bool reloop = false;
+
+
+
+        private Random random = new Random();
+        private List<SensorData> Mockdata = new List<SensorData>();
 
         
-        
 
-        public AnomalyService(FluxConnection fluxConnection, WeatherApiConnection weatherApiConnection, IConfiguration configuration, ILogger<AnomalyService> logger, OutlierLeaves outlierLeaves, IServiceScopeFactory scopeFactory, ErrorHub errorHub)
+
+
+        public AnomalyService(FluxConnection fluxConnection, WeatherApiConnection weatherApiConnection, IConfiguration configuration, ILogger<AnomalyService> logger, OutlierLeaves outlierLeaves, IServiceScopeFactory scopeFactory, IHubContext<ErrorHub> errorHub, SqlConnection sqlConnection)
         {
+            _fluxConnection = fluxConnection;
             _weatherApiConnection = weatherApiConnection;
             _logger = logger;
             _outlierLeaves = outlierLeaves;
             _scopeFactory = scopeFactory;
             _errorHub = errorHub;
+            _sqlConnection = sqlConnection;
             _serviceloopMinutes = configuration.GetValue<int>("LoopParameters:ServiceLoopMinutes");
             _logger.LogWarning("Log Test Anomaly aangemaakt");
         }
 
         public async Task Loop()
         {
+            //Mockdata.Clear();
 
-            //await foreach(SensorData sensorData in _fluxConnection.LoadSensorData())
+            //for (int i = 0; i < 50; i++)
             //{
-            //    _OutlierAlgo.SortData(sensorData);
+            //    Mockdata.Add(new SensorData() { DateTime = DateTime.Now, Floor = 3, Value = random.Next(5, 35), X = random.Next(0, 3), Y = random.Next(0, 3), Type = DataType.Temperature });
+            //    Mockdata.Add(new SensorData() { DateTime = DateTime.Now, Floor = 3, Value = random.Next(5, 120), X = random.Next(0, 3), Y = random.Next(0, 3), Type = DataType.Humidity });
             //}
 
-            List<SensorData> mocksensors = new List<SensorData>();
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 150, X = 1, Y = 1, Type = DataType.Temperature });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 150, X = 1, Y = 1, Type = DataType.Humidity });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 1, X = 1, Y = 1, Type = DataType.Temperature });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 1, X = 1, Y = 1, Type = DataType.Humidity });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 29, X = 1, Y = 1, Type = DataType.Temperature });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 61, X = 1, Y = 1, Type = DataType.Humidity });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 17, X = 1, Y = 1, Type = DataType.Temperature });
-            //mocksensors.Add(new SensorData() { DateTime = DateTime.Today, Floor = 3, Value = 29, X = 1, Y = 1, Type = DataType.Humidity });
 
 
-            mocksensors.Add(new SensorData() { DateTime = (DateTime.Now), Floor = 3, Value = 20, X = 1, Y = 1, Type = DataType.Temperature });
-            mocksensors.Add(new SensorData() { DateTime = (DateTime.Now).AddSeconds(1), Floor = 3, Value = 24, X = 1, Y = 1, Type = DataType.Temperature });
-            mocksensors.Add(new SensorData() { DateTime = (DateTime.Now).AddSeconds(2), Floor = 3, Value = 20, X = 1, Y = 1, Type = DataType.Temperature });
 
-            mocksensors.Add(new SensorData() { DateTime = DateTime.Now, Floor = 3, Value = 20, X = 1, Y = 1, Type = DataType.Humidity });
-            mocksensors.Add(new SensorData() { DateTime = (DateTime.Now).AddSeconds(1), Floor = 3, Value = 24, X = 1, Y = 1, Type = DataType.Humidity });
-            mocksensors.Add(new SensorData() { DateTime = (DateTime.Now).AddSeconds(2), Floor = 3, Value = 20, X = 1, Y = 1, Type = DataType.Humidity });
+            var list = new List<SensorError>();
 
             shouldContinue = true;
             while (shouldContinue)
             {
-               // _OutlierAlgo.SetWeatherApiData(await _weatherApiConnection.GetWeatherApi());
+                _outlierLeaves.SetWeatherApiData(await _weatherApiConnection.GetWeatherApi());
                 _logger.LogWarning("Loop werkt.");
                 var sw = Stopwatch.StartNew();
-                foreach (SensorData sensor in mocksensors)
+                _outlierLeaves.ClearSensorList();
+                foreach (SensorData sensorData in Mockdata)
                 {
-                    _outlierLeaves.FillSensorList(sensor);
+                    _outlierLeaves.FillSensorList(sensorData);
                 }
-               
+                //await foreach (SensorData sensorData in _fluxConnection.LoadSensorData())
+                //{
+                //    _outlierLeaves.FillSensorList(sensorData);
+                //}
 
-                var list = _outlierLeaves.RunAlgo();
+
+                list?.Clear();
+                list = _outlierLeaves.RunAlgo();
                 if (list != null)
                 {
-                    using (var scope = _scopeFactory.CreateScope())
-                    {
-                        var dbContext = scope.ServiceProvider.GetRequiredService<Isaac_AnomalyServiceContext>();
-                        await dbContext.AddRangeAsync(list);
-                        await dbContext.SaveChangesAsync();
-                        await _errorHub.SendError(list);
-                    }
+                    await _sqlConnection.SaveData(list);
+                    await _errorHub.Clients.All.SendAsync("ReceiveErrors", list);
                 }
 
-                
 
-                var time = TimeSpan.FromSeconds(_serviceloopMinutes) - sw.Elapsed;
+
+                var time = TimeSpan.FromMinutes(_serviceloopMinutes) - sw.Elapsed;
                 if (time < TimeSpan.Zero)
                 {
                     time = TimeSpan.Zero;

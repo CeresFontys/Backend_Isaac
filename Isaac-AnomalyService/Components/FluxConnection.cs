@@ -52,11 +52,11 @@ namespace Isaac_AnomalyService.Service
                 {
                     var sensordata = new SensorData();
                     var measurement = fluxRecord.GetMeasurement();
-                    if (measurement == "sensorhumidity")
+                    if (measurement == "sensorHumidity")
                     {
                         sensordata.Type = DataType.Humidity;
                     }
-                    else if (measurement == "sensortemperature")
+                    else if (measurement == "sensorTemperature")
                     {
                         sensordata.Type = DataType.Temperature;
                     }
