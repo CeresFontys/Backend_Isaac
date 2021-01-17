@@ -37,6 +37,13 @@ namespace Isaac_SensorSettingService.Controllers
             return _groupService.AddGroup(group);
         }
 
+        [HttpDelete]
+        [Route("test/{id}")]
+        public void RemoveGroup(int id)
+        {
+            _groupService.DeleteGroup(id);
+        }
+
         [HttpGet]
         [Route("test")]
         public string Test()
