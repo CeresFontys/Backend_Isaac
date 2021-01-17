@@ -44,9 +44,16 @@ namespace Isaac_SensorSettingService.Compontents
 
         public void DeleteGroup(int id)
         {
-            var foundGroup = _dbContext.FindAsync<SensorGroupModel>(id);
+            var foundGroup = _dbContext.Find<SensorGroupModel>(id);
+            var sensors = _dbContext.Sensors.Where(s => s.GroupId == id);
+            foreach (var sensor in sensors)
+            {
+                sensor.GroupId = null;
+            }
+
+            _dbContext.SaveChanges();
             _dbContext.Remove(foundGroup); 
-            _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
       
         }
 
